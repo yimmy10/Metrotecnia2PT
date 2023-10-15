@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+<style>
+    .img-invoice {
+        width: 100px;
+        margin: 0 auto;
+        text-align: left;
+    }
+
+    .head {
+        text-align: left;
+        text-transform: uppercase;
+    }
+
+    @page {
+        size: a4 portrait;
+        @frame header_frame {           /* Static Frame */
+           -pdf-frame-content: header_content;
+           left: 50pt; width: 512pt; top: 50pt; height: 40pt;
+        }
+        @frame content_frame {          /* Content Frame */
+            left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content;
+            left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+        }
+  }
+
+      .content {
+        margin-bottom:auto; /* Deja espacio para el pie de página */
+      }
+
+    p{
+        margin-left: 20px;
+        margin-right: 40px;
+        text-align: justify;
+      }
+      
+    
+    #invoice thead tr th {
+        text-align: left;
+        border-bottom: 1px solid black;
+        border-top: 1px solid black;
+        padding-top: 4px;
+    }
+
+    #invoice thead tr {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    #invoice tbody tr {
+        padding: 0;
+    }
+
+    .text-center{
+        text-align: center;
+    }
+</style>
+<body>
+
+    <div class="content">
+        <head>
+            <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <img src="C:/Users/Yimmy/web-metrotecnia/Metrotecnia/web/static/img/Metrotecnia.png" class="img-invoice">
+                  </div>
+                  <div class="col">
+                    <h1 class = "text-center">METROTECNIA S.A DE C.V.</h1>
+                  </div>
+                </div>
+            </div>
+        
+        </head>
+        <table id="invoice">
+            <thead>
+            <tr>
+                <th style="width: 25%;">CANTIDAD</th>
+                <th style="width: 25%;">DESCRIPCION</th>
+                <th style="width: 25%;">P. UNITARIO</th>
+                <th style="width: 25%;">P. PARTIDA</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for servicio in servicios  %}
+                <tr {% if forloop.first %}style="padding-top: 3px;" {% endif %}>
+                    <li>{{ servicio.cantidad }} x {{ servicio.marca }} - {{ servicio.modelo }} - Precio: {{ servicio.precio_unitario }}</li>
+                </tr>
+            {% endfor %}
+            <tr style="border-top: 1px solid black; padding-top: 4px;">
+                <td colspan="4"><b>SUBTOTAL</b></td>
+                <td style="text-align: left;">{{ sale.cliente }}</td>
+            </tr>
+            <tr style="padding-top: 0px;">
+                <td colspan="4"><b>IVA 12%</b></td>
+                <td style="text-align: left;">{{ sale.iva }}</td>
+            </tr>
+            <tr style="padding-top: 0px;">
+                <td colspan="4"><b>TOTAL A PAGAR</b></td>
+                <td style="text-align: left;">{{ sale.total }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <table style="margin-top: 250px;">
+            <thead>
+            <tr>
+                <p>
+                    <h4>MANTENIMIENTO PREVENTIVO:</h4>
+                    <p>El mantenimiento preventivo incluye desensamble, limpieza, rectificado de asientos de sellado
+                    y ajuste en presión; NO incluye cambio ni reparación de sellos, vástago, resorte o algún otro componente, en caso de que esto
+                    sea necesario se cotizará por separado. El servicio de mantenimiento se gestiona con un taller externo, éste determina los
+                    costos y tiempos de entrega correspondientes.</p>
+        
+                    <h4>SOBRE LA PRUEBA: </h4>
+        
+                    <p>
+                        1) Prueba de Ajuste (Presión de ajuste y diferencial de cierre): Se mide la presión de apertura y cierre de la válvula.
+                        <br>
+                        2) Prueba de Hermeticidad: Se mide la fuga del sello de la válvula mediante conteo de burbujas.
+                        <br>
+                        3) Prueba de Presión Neumática (Zona secundaria): Se determina si existen fugas en el cuerpo de la válvula.
+                    </p>
+        
+                    <p>
+                        Los métodos de prueba se basan en la norma NOM-093-SCFI-2020 incisos 8.3, 8.4 y 8.6. La prueba consiste exclusivamente
+                        en la identificación de las características señaladas, no incluye prueba de capacidad, ajuste, mantenimiento, reparación,
+                        extensión de garantía ni envío.
+                        En caso de que su equipo requiera una presión de ajuste especifica favor de indicarlo por escrito
+                        Fluido utilizado: Aire comprimido/ agua a temperatura ambiente
+                        Se entrega informe de resultados con gráfico de apertura en presión, etiqueta de “Probado”, y sello de plomo.
+                        informe de resultados no contiene declaración de conformidad ni fecha de próxima medición a menos que sea solicitado
+                        por escrito.
+                        Partidas que indican Servicio Acreditado: Laboratorio de Ensayo acreditado por ema, a.c. con acreditación No. MM-0806-122/17
+                    </p>
+        
+                    <div class="prueba">
+                        <h4>ASPECTOS TÉCNICOS</h4>
+                        <p>
+                            La prueba de presión neumática (Zona secundaria), solo aplica a válvulas de relevo de presión de bonete cerrado con diámetro
+                            de entrada mayor o igual a 1”(25 mm).
+                            El diseño de algunas válvulas restringe la realización de la prueba de hermeticidad del sello, en caso de presentarse esta
+                            situación, será informado en la Orden de Trabajo.
+                            <br>
+                            El laboratorio toma como referencia obligada la presión de ajuste estampada en la placa de la válvula de relevo de presión.
+                            Los resultados de la prueba se reportan en la unidad indicada en la placa de la válvula de relevo de presión, si requiere una
+                            unidad distinta favor de indicarlo.
+                            <br>
+                            Si la válvula de relevo de seguridad es para uso de calderas o generadores de vapor, se requiere el valor de Presión de Prueba
+                            en Frío; si no es proporcionado, se entregará informe de resultados indicando la Presión de Apertura observada (usando aire
+                            a temperatura ambiente), quedando bajo responsabilidad del usuario la interpretación de esta información.
+                            <br>
+                            APERTURA FUERA DE TOLERANCIA: Si la válvula abre afuera de la tolerancia especificada en la norma NOM-093-SCFI-2020
+                            se interrumpe la medición y se emite, en lugar del informe cotizado, un reporte con costo de $150.00. El equipo podrá ser
+                            ajustado y/o corregido para ser sometido a una nueva prueba.
+                            <br>
+                            MANTENIMIENTO: Las válvulas en uso, requieren mantenimiento preventivo PREVIO a la prueba, si el cliente lo requiere,
+                            podemos gestionarlo con un taller externo; este servicio se cotiza por separado, sus costos y tiempos de entrega son
+                            dispuestos por el taller externo.
+                            <br>
+                            En caso de requerir que gestionemos el MANTENIMIENTO PREVENTIVO: Éste incluye desensamble, limpieza, rectificado de
+                            asientos de sellado y ajuste en presión; NO incluye cambio ni reparación de sellos, vástago, resorte o algún otro componente,
+                            en caso de que esto sea necesario se considera como MANTENIMIENTO CORRECTIVO y se cotizará por separado.
+                            Para cambios en Presión de Ajuste: Metrotecnia solo se hace responsable de que la VRP abra a la presión solicitada, otros
+                            factores como diferencial de cierre, capacidad de descarga, y adecuación a una instalación específica son responsabilidad
+                            del usuario.
+            
+            
+            
+                        </p>
+                    </div>
+        
+            </tr>
+            <tr>
+                <th>
+                </th>
+            </tr>
+            </thead>
+        
+        </table>
+        
+    </div>
+
+    <!-- Content for Static Frame 'footer_frame' -->
+    <div id = "footer_content" >
+        page <pdf:pagenumber>
+        of <pdf:pagecount>
+    </div>
+
+
+    <footer class="py-3 my-4">
+        <p class="text-center text-muted">© 2022 Company, Inc</p>
+      </footer>
+
+
+ 
+</body>
+
+</html>

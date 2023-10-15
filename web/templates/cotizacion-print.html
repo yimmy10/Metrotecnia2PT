@@ -1,0 +1,36 @@
+
+
+<h1>OS: {{ object.pk }}</h1>
+<p>Nombre del cliente: {{ object.cliente.razon_social}}</p>
+<p>Nombre del cliente: {{ object.cotizado_por}}</p>
+<p>Calle Número colonia {{ object.cliente.calle_numero_colonia }}</p>
+<p>Ciudad: {{ object.cliente.ciudad }}</p>
+<p>Estado: {{ object.cliente.estado }}</p>
+<p>CP: {{ object.cliente.cp}}</p>
+<p>Contacto: {{ object.cliente.contacto}}</p>
+<p>Correo: {{ object.cliente.correo}}</p>
+<p>Teléfono: {{ object.cliente.telefono }}</p>
+
+
+<table>
+  <thead>
+    <td>Servicio</td>
+    <td>Marca</td>
+  </thead>
+    <tbody>
+    {% for servicio in servicios %}
+    <tr>
+        <td>{{servicio.pk}}</td>
+        <td>{{servicio.marca}}</td>
+    </tr>
+    {%endfor%}
+
+    </tbody>
+</table>
+
+
+<script>
+    window.onload = function() {
+        window.print();
+     }
+</script>

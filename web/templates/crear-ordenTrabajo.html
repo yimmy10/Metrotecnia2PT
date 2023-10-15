@@ -1,0 +1,123 @@
+{% extends './layout.html' %}
+{% load widget_tweaks %}
+
+{% block title %} Orden de trabajo {% endblock %}
+
+{% block content %}
+{{ form2.media.css }}
+
+<div class="card">
+  <div class="card-body">
+
+    <div class="card-title">
+      <h1>Crear orden de trabajo</h1>
+        
+    </div>
+
+    <form method="POST" id="cotizacion-form">
+      {% csrf_token %}
+        {% for hidden_field in form.hidden_fields %}
+        {{ hidden_field }}
+      {% endfor %}
+        {% for hidden_field in form2.hidden_fields %}
+        {{ hidden_field }}
+      {% endfor %}
+        {% for hidden_field in form_servicios.hidden_fields %}
+        {{ hidden_field }}
+      {% endfor %}
+      
+      <div class="card-content">
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            {{form.errors}}
+            {% for field in form.visible_fields %}
+            <div class="form-row">
+              {% if field.field.widget.input_type == "checkbox" %}
+
+                <div class="col-2">{{ field.label_tag }}</div>
+                <div class="col-3">
+                    {% render_field field class="form-check" %}
+                  </div>
+                {% else %}
+                <div class="col-5">
+                  {{ field.label_tag }}
+                  {%if form.errors %}
+                    {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                    {% endfor %}
+                  {% endif %}
+                  {% render_field field class="form-control" %}
+                  {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                  {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            {{form2.errors}}
+           {% for field in form2.visible_fields %}
+            <div class="form-group">
+              {{ field.label_tag }}
+              {% render_field field class="form-control" %}
+              {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+            {{form_s.errors}}
+            {{ formset.management_form }}
+            {% for form_s in formset %}
+            {% for hidden in form_s.hidden_fields %}
+              {{hidden}}
+            {%endfor%}
+            <div id="form_serv">
+              {% for field in form_s.visible_fields %}
+              <div class="form-group" >
+                {% if field.field.widget.input_type == "checkbox" %}
+
+                <div class="col-2">{{ field.label_tag }}</div>
+                <div class="col-3">
+                    {% render_field field class="form-check" %}
+                  </div>
+                {% else %}
+                <div class="col-5">
+                  {{ field.label_tag }}
+                  {%if form_s.errors %}
+                    {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                    {% endfor %}
+                  {% endif %}
+                  {% render_field field class="form-control" %}
+                  {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                  {% endif %}
+                </div>
+                {% endif %}
+            
+              </div>
+              {% endfor %}
+              <hr class="horizontal service-divide dark mt-0">
+            </div>
+            {% endfor %}
+            <button type="button" class="btn btn-secondary" onclick="addForm()" id="add-form">Agregar servicio</button>
+            <button type="button" class="btn btn-danger" onclick="deleteForm()" id="add-form">Eliminar servicio</button>
+            </div>
+           </div>
+      </div>
+  
+  
+      <div class="card-footer"><input type="submit" id="submit" class="btn btn-success"></div>
+    </form>
+</div>
+</div>
+
+
+{% endblock content %}

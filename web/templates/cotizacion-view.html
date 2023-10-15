@@ -1,0 +1,158 @@
+{% extends './layout.html' %}
+{% load widget_tweaks %}
+
+{% block title %} Cotizacion {% endblock %}
+
+{% block content %}
+
+<div class="card">
+  <div class="card-body">
+
+    <div class="card-title">
+      <h1>Ver cotización</h1>
+      <ul class="nav nav-pills" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+            role="tab" aria-controls="home" aria-selected="true">Cotizacion</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
+            role="tab" aria-controls="profile" aria-selected="false">Cliente</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
+            role="tab" aria-controls="contact" aria-selected="false">Servicios</a>
+        </li>
+      </ul>
+    </div>
+    <div class="card-content">
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          {% for field in form.visible_fields %}
+          <div class="form-row">
+            {% if field.field.widget.input_type == "checkbox" %}
+
+            <div class="col-2">{{ field.label_tag }}</div>
+            <div class="col-3">
+              {% render_field field class="form-check" %}
+            </div>
+            {% else %}
+            <div class="col-5">
+              {{ field.label_tag }}
+              {%if form.errors %}
+              {% for error in field.errors %}
+              <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+              </div>
+              {% endfor %}
+              {% endif %}
+              {% render_field field class="form-control" %}
+              {% if field.help_text %}
+              <small class="form-text text-muted">{{ field.help_text }}</small>
+              {% endif %}
+            </div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          {% for field in form2.visible_fields %}
+          <div class="form-group">
+            {{ field.label_tag }}
+            {% render_field field class="form-control" %}
+            {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+          <div class="table-responsive">
+            <table id="servicios_table" class="table responsive table-striped table-bordered table-sm table-hover" style="width:100%;">
+              <thead>
+                <tr>
+                  <th> {{ "cantidad" | capfirst }} </th>
+                  <th> {{ "marca" | capfirst }} </th>
+                  <th> {{ "modelo" | capfirst }} </th>
+                  <th> {{ "ajuste" | capfirst }} </th>
+                  <th> {{ "entrada nominal" | capfirst }} </th>
+                  <th> {{ "caldera" | capfirst }} </th>
+                  <th> {{ "condicion" | capfirst }} </th>
+                  <th> {{ "prueba" | capfirst }} </th>
+                  <th> {{ "alcance acreditado" | capfirst }} </th>
+                  <th> {{ "notas" | capfirst }} </th>
+                  <th> {{ "precio unitario" | capfirst }} </th>
+                  <th> {{ "mantenimiento" | capfirst }} </th>
+                  <th> {{ "tipo mantenimiento" | capfirst }} </th>
+                  <th> {{ "numero de serie" | capfirst }} </th>
+                  <th> {{ "id de valvula" | capfirst }} </th>
+                  <th> {{ "agua" | capfirst }} </th>
+                  <th> {{ "vapor" | capfirst }} </th>
+                  <th> {{ "precion de ajuste dc" | capfirst }} </th>
+                  <th> {{ "presion de hermeticidad" | capfirst }} </th>
+                  <th> {{ "presion neumatica" | capfirst }} </th>
+                  <th> {{ "mantenimiento preventivo" | capfirst }} </th>
+                  <th> {{ "mantenimiento correctivo" | capfirst }} </th>
+                  <th> {{ "cambio p ajuste" | capfirst }} </th>
+                  <th> {{ "acreditado" | capfirst }} </th>
+                  <th> {{ "otro servicio" | capfirst }} </th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for servicio in servicios %}
+                <tr>
+                  <td> {{ servicio.cantidad| capfirst }} </td>
+                  <td> {{ servicio.marca| capfirst }} </td>
+                  <td> {{ servicio.modelo| capfirst }} </td>
+                  <td> {{ servicio.valor_ajuste }} {{ servicio.ajuste| capfirst }} </td>
+                  <td> {{ servicio.entrada_nominal| capfirst }} </td>
+                  <td> {% if servicio.caldera %} Si {%else %} No {% endif %} </td>
+                  <td> {{ servicio.condicion| capfirst }} </td>
+                  <td> {{ servicio.prueba| capfirst }} </td>
+                  <td> {% if servicio.alcance_acreditado %} Si {%else %} No {% endif %} </td>
+                  <td> {{ servicio.notas| capfirst }} </td>
+                  <td> {{ servicio.precio_unitario| capfirst }} </td>
+                  <td> {% if servicio.mantenimiento %} Si {%else %} No {% endif %} </td>
+                  <td> {{ servicio.tipo_mantenimiento| capfirst }} </td>
+                  <td> {{ servicio.n_serie| capfirst }} </td>
+                  <td> {{ servicio.id_valvula| capfirst }} </td>
+                  <td> {% if servicio.agua %} Si {%else %} No {% endif %} </td>
+                  <td> {% if servicio.vapor %} Si {%else %} No {% endif %} </td>
+                  <td> {% if servicio.p_ajuste_dc %} Si {%else %} No {% endif %} </td>
+                  <td> {% if servicio.p_hermeticidad %} Si {%else %} No {% endif %} </td>
+                  <td> {% if servicio.p_neumatica %} Si {%else %} No {% endif %} </td>
+                  <td> {% if servicio.mantto_preventivo %} Si {%else %} No {% endif %} </td>
+                  <td> {% if servicio.mantto_correctivo %} Si {%else %} No {% endif %}</td>
+                  <td> {% if servicio.cambio_p_ajuste %} Si {%else %} No {% endif %} </td>
+                  <td>{% if servicio.acreditado %} Si {%else %} No {% endif %}</td>
+                  <td> {% if servicio.otro_servicio %} Si {%else %} No {% endif %}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      {% if object.activo %}
+          <a class="btn btn-outline-secondary" href='{% url "cotizacion-update" pk=object.pk %}'>Modificar</a>
+      {% endif %}
+      <a class="btn btn-outline-info" href='{% url "cotizaciones-lista"%}'>Regresar</a>
+      </div>
+
+  </div>
+</div>
+{% endblock content %}
+
+{% block extrajs %}
+<script>
+  $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+    $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+  });
+  
+  const table = new DataTable('#servicios_table', {
+    responsive: true,
+  }  );
+</script>
+{% endblock extrajs %}

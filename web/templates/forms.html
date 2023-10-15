@@ -1,0 +1,52 @@
+{% extends './layout.html' %}
+{% load widget_tweaks %}
+{% block title %} {% endblock %}
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+      <h1>Formulario {{ tf  }}</h1>
+    </div>
+    <div class="card-body">
+
+      <div class="container">
+        <form method="POST">
+          {% csrf_token %}
+              {% for hidden_field in form.hidden_fields %}
+              {{ hidden_field }}
+            {% endfor %}
+
+          {% for field in form.visible_fields %}
+            <div class="form-group">
+              {% if field.field.widget.input_type == "checkbox" %}
+
+                <div class="col-2">{{ field.label_tag }}</div>
+                <div class="col-3">
+                    {% render_field field class="form-check" %}
+                  </div>
+                {% else %}
+                <div class="col">
+                  {{ field.label_tag }}
+                  {%if form.errors %}
+                    {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                    {% endfor %}
+                  {% endif %}
+                  {% render_field field class="form-control" %}
+                  {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                  {% endif %}
+                </div>
+                {% endif %}
+            </div>
+          {% endfor %}
+
+
+          <input class="btn btn-success" type="submit">
+        </form>
+      </div>
+    </div>
+</div>
+{% endblock content %}

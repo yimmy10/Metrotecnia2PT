@@ -1,0 +1,59 @@
+{% extends './layout.html' %}
+
+{% block title %} Empleado {% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1>{{ object.user.first_name }} {{ object.user.last_name }}</h1>
+    </div> 
+    <div class="card-body">
+        <div class="row mt-2">
+            <div class="col-auto">
+              <div class="input-group-text">Usuario:</div>
+            </div>
+            <div class="col">
+              <input disabled type="text" class="form-control"  placeholder=" {{ object.user.username }}">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-auto">
+              <div class="input-group-text">Departamento:</div>
+            </div>
+            <div class="col">
+              <input disabled type="text" class="form-control"  placeholder=" {{ object.departamento }}">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-auto">
+              <div class="input-group-text">Puesto:</div>
+            </div>
+            <div class="col">
+              <input disabled type="text" class="form-control"  placeholder=" {{ object.puesto }}">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-auto">
+              <div class="input-group-text">Teléfono:</div>
+            </div>
+            <div class="col">
+              <input disabled type="text" class="form-control"  placeholder=" {{ object.telefono }}">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-auto">
+              <div class="input-group-text">Dirección:</div>
+            </div>
+            <div class="col">
+              <input disabled type="text" class="form-control"  placeholder=" {{ object.direccion }}">
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-outline-warning" href='{% url "empleado-update" pk=object.pk %}'>Modificar</a>
+        <a class="btn btn-outline-info" href='{% url "empleados-lista" %}'>Regresar</a>
+    </div>
+
+</div>
+
+{% endblock content %}

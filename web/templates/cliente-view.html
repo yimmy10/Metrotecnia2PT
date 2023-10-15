@@ -1,0 +1,85 @@
+{% extends './layout.html' %}
+
+{% block title %} Cliente {% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        
+        <h1>Razon social: {{ object.razon_social }}</h1>
+    </div>
+    <div class="card-body">
+        <div class="row mt-2">
+            <div class="col-auto">
+              <div class="input-group-text">RFC:</div>
+            </div>
+            <div class="col">
+              <input disabled type="text" class="form-control"  placeholder=" {{ object.rfc }}">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-auto">
+              <div class="input-group-text">Dirección:</div>
+            </div>
+            <div class="col">
+              <textarea disabled class="form-control"  >{{ object.calle_numero_colonia  }}</textarea>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-auto">
+              <div class="input-group-text">Ciudad:</div>
+            </div>
+            <div class="col">
+              <input disabled type="text" class="form-control"  placeholder=" {{ object.ciudad | capfirst }}">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-auto">
+              <div class="input-group-text">Estado:</div>
+            </div>
+            <div class="col">
+              <input disabled type="text" class="form-control"  placeholder=" {{ object.estado | capfirst }}">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-auto">
+              <div class="input-group-text">C.P.:</div>
+            </div>
+            <div class="col">
+              <input disabled type="text" class="form-control"  placeholder=" {{ object.cp | capfirst }}">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-auto">
+              <div class="input-group-text">Contacto:</div>
+            </div>
+            <div class="col">
+              <input disabled type="text" class="form-control"  placeholder=" {{ object.contacto | capfirst }}">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-auto">
+              <div class="input-group-text">Correo:</div>
+            </div>
+            <div class="col">
+              <input disabled type="text" class="form-control"  placeholder=" {{ object.correo }}">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-auto">
+              <div class="input-group-text">Teléfono:</div>
+            </div>
+            <div class="col">
+              <input disabled type="text" class="form-control"  placeholder=" {{ object.telefono | capfirst }}">
+            </div>
+        </div>
+        
+    </div>
+    <div class="card-footer">    
+        <a class="btn btn-outline-warning" href='{% url "cliente-update" pk=object.pk %}'>Modificar</a>
+        <a class="btn btn-outline-info" href='{% url "clientes-lista" %}'>Regresar</a>
+    </div>    
+</div>
+{% endblock content %}
+
+

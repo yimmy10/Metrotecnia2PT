@@ -1,0 +1,98 @@
+.rowedit{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.circle {
+    float: right;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 1px 1px #0000001a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pulse {
+    animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+    0% {
+        box-shadow: 0 0 0 0px rgba(57, 127, 255, 0.2);
+    }
+
+    100% {
+        box-shadow: 0 0 0 25px rgba(57, 127, 255, 0);
+    }
+}
+
+.titlecolor{
+    color: #000000;
+}
+
+.buttonText {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    align-self: center;
+  }
+  .info {
+    font-size: 20px;
+    border-radius: 15px;
+    position: relative;
+    display: block;
+  }
+  
+  .info .extra-info {
+    transition: all .2s ease;
+    display: none;
+    line-height: 30px;
+    font-size: 16px;
+    position: absolute;
+    top: 0;
+    right: 30px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    width: max-content;
+    white-space: nowrap;
+  }
+  
+  .info:hover .extra-info {
+    display: block;
+  }
+  
+  .info button {
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: transparent;
+    border: 1px solid #007bff;
+    color: #007bff;
+    cursor: pointer;
+}
+  
+.info button:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.iconcolor{
+  color: #007bff;
+  margin-right: 10px;
+}
+
+.headerStyle{
+  display: flex;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  align-self: center;
+}

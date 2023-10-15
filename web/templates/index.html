@@ -1,0 +1,76 @@
+{% extends './layout.html' %}
+{% load static %}
+{% block title %} INICIO {% endblock %}
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h1>Manuales de uso</h1>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            {% if user.empleado.departamento == "Cotizacion" or user.empleado.departamento == "Administracion" or user.empleado.departamento == "Ventas" %}
+            <div class="col-auto">
+                <h3>Manual de ventas y cotizaciones</h3>
+                <object
+                data='{% static 'manuales/Manual_ventas_cotizacion.pdf' %}'
+                type="application/pdf"
+                width="300"
+                height="439"
+            >
+
+                <iframe
+                src='{% static 'manuales/Manual_ventas_cotizacion.pdf' %}'
+                width="300"
+                height="439"
+                >
+                <p>This browser does not support PDF!</p>
+                </iframe>
+            </object>
+            </div>
+            {% endif %}
+            {% comment %} {% if user.empleado.departamento == "Laboratorios" or user.empleado.departamento == "Administracion" %}
+            <div class="col-auto">
+                <h3>Manual de Laboratorios</h3>
+                <object
+                data='{% static 'manuales/Manual_laboratorios.pdf' %}'
+                type="application/pdf"
+                width="300"
+                height="439"
+            >
+
+                <iframe
+                src='{% static 'manuales/Manual_laboratorios.pdf' %}'
+                width="300"
+                height="439"
+                >
+                <p>This browser does not support PDF!</p>
+                </iframe>
+            </object>
+            </div>
+            {% endif %} {% endcomment %}
+            {% if user.empleado.departamento == "Administracion"%}
+            <div class="col-auto">
+                <h3>Manual de administración</h3>
+                <object
+                data='{% static 'manuales/Manual_administrador.pdf' %}'
+                type="application/pdf"
+                width="300"
+                height="439"
+            >
+
+                <iframe
+                src='{% static 'manuales/Manual_administrador.pdf' %}'
+                width="300"
+                height="439"
+                >
+                <p>This browser does not support PDF!</p>
+                </iframe>
+            </object>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

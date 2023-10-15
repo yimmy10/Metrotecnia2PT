@@ -1,0 +1,267 @@
+{% extends './layout.html' %}
+{% load widget_tweaks %}
+
+{% block title %} Cotizacion {% endblock %}
+
+{% block content %}
+{{ form2.media.css }}
+
+<div class="card">
+  <div class="card-body">
+
+    <div class="card-title">
+      <h1>Crear cotización</h1>
+        <ul class="nav nav-pills" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Cotización</a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Cliente</a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Servicio</a>
+          </li>
+        </ul>
+    </div>
+
+    <form method="POST" id="cotizacion-form">
+      {% csrf_token %}
+        {% for hidden_field in form.hidden_fields %}
+        {{ hidden_field }}
+      {% endfor %}
+        {% for hidden_field in form2.hidden_fields %}
+        {{ hidden_field }}
+      {% endfor %}
+        {% for hidden_field in form_servicios.hidden_fields %}
+        {{ hidden_field }}
+      {% endfor %}
+      
+      <div class="card-content">
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            {{form.errors}}
+            {% for field in form.visible_fields %}
+            <div class="form-row">
+              {% if field.field.widget.input_type == "checkbox" %}
+
+                <div class="col-2">{{ field.label_tag }}</div>
+                <div class="col-3">
+                    {% render_field field class="form-check" %}
+                  </div>
+                {% else %}
+                <div class="col-5">
+                  {{ field.label_tag }}
+                  {%if form.errors %}
+                    {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                    {% endfor %}
+                  {% endif %}
+                  {% render_field field class="form-control" %}
+                  {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                  {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            {{form2.errors}}
+           {% for field in form2.visible_fields %}
+            <div class="form-group">
+              {{ field.label_tag }}
+              {% render_field field class="form-control" %}
+              {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+            {{form_s.errors}}
+            {{ formset.management_form }}
+            {% for form_s in formset %}
+            {% for hidden in form_s.hidden_fields %}
+              {{hidden}}
+            {%endfor%}
+            <div id="form_serv">
+              {% for field in form_s.visible_fields %}
+              <div class="form-group" >
+                {% if field.field.widget.input_type == "checkbox" %}
+
+                <div class="col-2">{{ field.label_tag }}</div>
+                <div class="col-3">
+                    {% render_field field class="form-check" %}
+                  </div>
+                {% else %}
+                <div class="col-5">
+                  {{ field.label_tag }}
+                  {%if form_s.errors %}
+                    {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                    {% endfor %}
+                  {% endif %}
+                  {% render_field field class="form-control" %}
+                  {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                  {% endif %}
+                </div>
+                {% endif %}
+            
+              </div>
+              {% endfor %}
+              <hr class="horizontal service-divide dark mt-0">
+            </div>
+            {% endfor %}
+            <button type="button" class="btn btn-secondary" onclick="addForm()" id="add-form">Agregar servicio</button>
+            <button type="button" class="btn btn-danger" onclick="deleteForm()" id="add-form">Eliminar servicio</button>
+            </div>
+           </div>
+      </div>
+  
+  
+      <div class="card-footer"><input type="submit" id="submit" class="btn btn-success"></div>
+    </form>
+</div>
+</div>
+
+
+<script>
+  servicioForm = document.querySelectorAll("#form_serv")
+  container = document.querySelector("#contact")
+  addButton = document.querySelector("#add-form")
+  totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+  formNum = servicioForm.length-1
+  const selectElement = document.getElementById('id_clientes');
+
+
+
+  function blockMantenimiento(id){
+    let mantenimiento = document.getElementById(`id_form-${id}-mantenimiento`).checked;
+    let t_mantenimiento = document.getElementById(`id_form-${id}-tipo_mantenimiento`);
+    t_mantenimiento.disabled = (mantenimiento ? false:true);
+  }
+
+  document.addEventListener("DOMContentLoaded", function(event) {
+    servicioForm.forEach(function(entry,id) {
+      blockMantenimiento(id);
+      document.getElementById(`id_form-${id}-mantenimiento`).addEventListener('change', () => blockMantenimiento(id));
+      
+    }, this);
+  });
+
+
+  selectElement.addEventListener('change', (event) => {
+    id = document.getElementById('id_clientes').value
+    fetch('/api/clientes/?' + new URLSearchParams({
+         id,
+    }))
+    .then(response => response.json())
+    .then(function(data)
+    {
+        
+        data.forEach(element => {
+            document.getElementById("id_razon_social").value = element.razon_social;
+            document.getElementById("id_rfc").value = element.rfc;
+            document.getElementById("id_calle_numero_colonia").value = element.calle_numero_colonia;
+            document.getElementById("id_ciudad").value = element.ciudad;
+            document.getElementById("id_estado").value = element.estado;
+            document.getElementById("id_cp").value = element.cp;
+            document.getElementById("id_contacto").value = element.contacto;
+            document.getElementById("id_correo").value = element.correo;
+            document.getElementById("id_telefono").value = element.telefono;
+          });
+
+    }); 
+  });
+
+
+  
+  function clearForm(id)
+  {
+    divs =  document.querySelectorAll(`input[name^="form-${id}"]`);
+    divs2 =  document.querySelectorAll(`textarea[name^="form-${id}"]`);
+
+    divs.forEach(element => {
+      document.getElementById(element.id).value= '';
+      document.getElementById(element.id).checked= false;
+
+    });
+    divs2.forEach(element => {
+      document.getElementById(element.id).value= '';
+
+    });
+  }
+
+  function addForm(){
+
+      newForm = servicioForm[servicioForm.length - 1].cloneNode(true)
+      formRegex = RegExp(`form-(\\d){1}-`,'g')
+      formNum++
+      newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
+      container.insertBefore(newForm, addButton)
+      totalForms.setAttribute('value', `${formNum+1}`)
+      servicioForm = document.querySelectorAll("#form_serv")
+      document.getElementById(`id_form-${formNum}-mantenimiento`).addEventListener('change', () => blockMantenimiento(formNum));
+      clearForm(formNum);
+}
+function deleteForm(){
+
+  if(servicioForm.length==1)
+  {
+    return
+  }
+    pop = servicioForm[servicioForm.length - 1]
+    pop.parentNode.removeChild(pop)
+    
+    formNum--
+    totalForms.setAttribute('value', `${formNum+1}`)
+    servicioForm = document.querySelectorAll("#form_serv")
+}
+
+
+</script>
+{% endblock content %}
+
+{% block extrajs %}
+{{ form2.media.js }}
+<script>
+  $('#submit').click(function () {
+    var invalidInputs = $('input:invalid, select:invalid');
+    if(invalidInputs.length > 0){
+        var invalidInput = $(invalidInputs[0]);
+        var $closest = invalidInput.closest('.tab-pane');
+        var id = $closest.attr('id');
+        $('a[data-bs-target="#'+ id +'"]').tab('show');
+        $('a[data-bs-target="#'+ id +'"]').trigger('click');
+        console.log(invalidInput)
+    }
+});
+  $('#id_clientes').on('select2:select', function (e) {
+    var id = e.params.data.id;
+    fetch('/api/clientes/?' + new URLSearchParams({
+         id,
+    }))
+    .then(response => response.json())
+    .then(function(data)
+    {
+        data.results.forEach(element => {
+            document.getElementById("id_razon_social").value = element.razon_social;
+            document.getElementById("id_rfc").value = element.rfc;
+            document.getElementById("id_calle_numero_colonia").value = element.calle_numero_colonia;
+            document.getElementById("id_ciudad").value = element.ciudad;
+            document.getElementById("id_estado").value = element.estado;
+            document.getElementById("id_cp").value = element.cp;
+            document.getElementById("id_contacto").value = element.contacto;
+            document.getElementById("id_correo").value = element.correo;
+            document.getElementById("id_telefono").value = element.telefono;
+          });
+
+    }); 
+  });
+  </script>
+{% endblock extrajs %}
