@@ -106,39 +106,56 @@ WSGI_APPLICATION = 'Metrotecnia.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+# if DEBUG:
+#     DATABASES = {
+#         # 'default': {
+#         #     'ENGINE': 'django.db.backends.sqlite3',
+#         #     'NAME': BASE_DIR / 'db.sqlite3',
+#         # }
+
+#         'default': {
+#              'ENGINE': 'django.db.backends.mysql',
+#              'NAME': 'ysgerman$metrotecnia',
+#              'USER': 'root',
+#              'PASSWORD': 'root',
+#              'HOST': 'localhost',
+#              'PORT': '3307',
+#         }
+#     }
+# else:
+#     DATABASES = {
+#         # 'default': {
+#         #     'ENGINE': 'django.db.backends.mysql',
+#         #     'NAME': 'ysgerman$metrotecnia',
+#         #     'USER': 'root',
+#         #     'PASSWORD': 'root',
+#         #     'HOST': 'localhost',
+#         #     'PORT': '3307',
+#         #}
+
+#           'default': {
+#              'ENGINE': 'django.db.backends.sqlite3',
+#              'NAME': BASE_DIR / 'db.sqlite3',
+#          }
+#     }
 if DEBUG:
     DATABASES = {
-        # 'default': {
-        #     'ENGINE': 'django.db.backends.sqlite3',
-        #     'NAME': BASE_DIR / 'db.sqlite3',
-        # }
-
         'default': {
-             'ENGINE': 'django.db.backends.mysql',
-             'NAME': 'ysgerman$metrotecnia',
-             'USER': 'root',
-             'PASSWORD': 'root',
-             'HOST': 'localhost',
-             'PORT': '3307',
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'ysGerman$metrotecnia',
+            'USER': 'root',
+            'PASSWORD': '',
+            'HOST': 'localhost',
+            'PORT': '3306',
         }
     }
 else:
     DATABASES = {
-        # 'default': {
-        #     'ENGINE': 'django.db.backends.mysql',
-        #     'NAME': 'ysgerman$metrotecnia',
-        #     'USER': 'root',
-        #     'PASSWORD': 'root',
-        #     'HOST': 'localhost',
-        #     'PORT': '3307',
-        #}
-
-          'default': {
-             'ENGINE': 'django.db.backends.sqlite3',
-             'NAME': BASE_DIR / 'db.sqlite3',
-         }
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
