@@ -1,0 +1,185 @@
+{% extends './layout.html' %}
+
+{% block title %} Lista de ordenes de trabajo{% endblock %}
+
+{% block styles %}
+  <style>
+    .buttonText {
+      display: flex;
+      align-items: center;
+      align-content: center;
+      text-align: center;
+      align-self: center;
+    }
+
+    .info {
+      font-size: 20px;
+      border-radius: 15px;
+      position: relative;
+      display: block;
+    }
+    
+    .info .extra-info {
+      transition: all .2s ease;
+      display: none;
+      line-height: 30px;
+      font-size: 16px;
+      position: absolute;
+      top: 0;
+      right: 30px;
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      z-index: 999;
+      width: max-content;
+      white-space: nowrap;
+    }
+    
+    .info:hover .extra-info {
+      display: block;
+    }
+    
+    .info button {
+      font-size: 20px;
+      padding: 10px 20px;
+      border-radius: 20px;
+      background-color: transparent;
+      border: 1px solid #007bff;
+      color: #007bff;
+      cursor: pointer;
+    }
+      
+    .info button:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .iconcolor{
+      color: #007bff;
+      margin-right: 10px;
+    }
+
+    .headerStyle{
+      display: flex;
+      align-items: center;
+      align-content: center;
+      text-align: center;
+      align-self: center;
+    }
+  </style>
+{% endblock styles %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <div class="row rowedit">
+      <div class="col-11">
+        <h1>  Lista de ordenes de trabajo{{ del_text }}</h1>
+      </div>
+      
+      <div class="col">
+        <div class="info">
+          <button type="button" class="btn btn-outline-info btn-elevate btn-circle pulse circle">
+            <i class="fa fa-info"></i>
+          </button>
+          
+          <div class="extra-info">
+            <div class="card">
+              <div class="card-header headerStyle">
+                <i class="fa fa-info-circle fa-2x iconcolor" aria-hidden="true"></i> <b>Ayuda en lista de cotizaciones</b>
+              </div>
+              <div class="card-body" style="background-color: #f2f2f2">
+                <h5 class="card-title text-center">Se despliega la lista de cotizaciones subidas, puedes realizar las siguientes acciones:</h5>
+
+                <div class="buttonText">
+                  <a class="btn btn-outline-primary" style="margin-right: 10px;">Ver</a>
+                  <p class="text-primary">El botón Ver nos ayudará a conocer toda la información agregada en la cotización, datos del cliente y el servicio que se realizará.</p>
+                </div>
+                
+                <div class="buttonText">
+                  <a class="btn btn-outline-info" style="margin-right: 10px;">Modificar</a>
+                  <p class="text-info">Con el botón Modificar puedes editar una cotización, solamente puedes editar el servicio.</p>
+                </div>
+    
+                <div class="buttonText">
+                  <a class="btn btn-danger" style="margin-right: 10px;">Eliminar</a>
+                  <p class="text-danger">El botón Eliminar desactivará una cotización.</p>
+                </div>
+    
+                <div class="buttonText">
+                  <a class="btn btn-success" style="margin-right: 10px;">Activar</a>
+                  <p class="text-success">El botón Activar permite activar nuevamente una cotización que fue desactivada con anterioridad.</p>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <div class="card-body">
+    <table id="orden-compra-table" class="table responsive table-striped table-bordered">
+        <thead class="thead-dark">
+            <th scope="col"># Orden de Compra</th>
+            <th scope="col">Codigo OT</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Fecha</th>
+            <th scope="col"># Numero de cotización</th>
+            <th scope="col">Ver</th>
+        </thead>
+        <tbody>
+            {% for orden in ordenes %}
+                <tr>
+                    <td>{{ orden.id }}</td>
+                    <td>{{ orden.codigoOT }}</td>
+                    <td>{{ orden.nombre }}</td>
+                    <td>{{ orden.fecha }}</td>
+                    <td>{{ orden.cotizacion_id }}</td>
+                    <td><a href="{% url 'ordenTrabajo-lista'%}">Ver</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="card-footer">
+    <a class="btn btn-outline-primary" href="{% url 'crear-ordentrabajo' %}">Crear Orden de Compra</a>
+</div>
+  </div>  
+</div>
+
+{% endblock content %}
+
+{% block extrajs %}
+
+<script>
+  const table = new DataTable('#cotizacion-table', {
+    responsive: true,
+    columns: [
+      null,
+      null,
+      null,
+      {'searchable':false},
+    ],
+    aaSorting: [[0,'asc']],
+    language: {
+        "lengthMenu": "Mostrar _MENU_ cotizaciones por página",
+        "zeroRecords": "No se ha encontrado.",
+        "info": "Mostrando página _PAGE_ de _PAGES_",
+        "infoEmpty": "Sin información disponible",
+        "search":         "Búsqueda:",
+        "infoFiltered": "(Filtrado de _MAX_ cotizaciones)",
+        "paginate": 
+        {
+            "first":      "Inicio",
+            "last":       "Ultimo",
+            "next":       "Siguiente",
+            "previous":   "Anterior",
+        },
+    },
+  }  );
+
+</script>
+{% endblock extrajs %}

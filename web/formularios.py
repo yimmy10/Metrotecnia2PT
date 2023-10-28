@@ -300,3 +300,48 @@ class UserPasswordChangeForm(AdminPasswordChangeForm):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super().__init__(user, *args, **kwargs)
+
+
+class OrdenTrabajoForm(forms.ModelForm):
+    class Meta:
+        model = OrdenTrabajo
+        fields = [
+            "codigoOT",
+            "nombre",
+            "fecha",
+            "declaraconf",
+            "ordenCompra",
+            "notas",
+            "serie",
+            "id_Product",  # Agregamos el campo id_Product
+            "notas_especiales",
+            "cotizacion_id"
+        ]
+        labels = {
+            "codigoOT": "Codigo OT",
+            "nombre": "Nombre",
+            "fecha": "Fecha",
+            "declaraconf": "Declaración de confidencialidad",
+            "ordenCompra": "Orden de compra",
+            "notas": "Notas",
+            "serie": "Serie",
+            "id_Product": "ID del Producto",  # Etiqueta personalizada para id_Product
+            "notas_especiales": "Notas especiales",
+            "cotizacion_id": "Cotización"
+        }
+    def __init__(self, *args, **kwargs):
+        super(OrdenTrabajoForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control'})
+        # Asignar un widget de checkbox al campo "declaraconf"
+        self.fields['declaraconf'].widget = forms.CheckboxInput()
+        self.fields['fecha'].widget = forms.DateInput(attrs={'class': 'form-control', 'type': 'date'})
+        self.fields['notas'].widget = forms.Textarea(attrs={'class': 'form-control', 'rows': 3})
+        self.fields['notas_especiales'].widget = forms.Textarea(attrs={'class': 'form-control', 'rows': 3})
+
+
+
+
+
+
+

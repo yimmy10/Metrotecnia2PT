@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
-from web.models import Cliente,Cotizacion,Empleado
+from web.models import Cliente,Cotizacion,Empleado,OrdenTrabajo
 
 
 class ClienteSerializer(serializers.ModelSerializer):
@@ -50,6 +50,22 @@ class EmpleadoSerializer(serializers.ModelSerializer):
         btn_4 = f"<a class='m-1 btn btn-danger' href='{reverse_lazy('empleado-deactivate',kwargs={'pk':obj.pk} )}'>Eliminar</a>" if obj.user.is_active else f"<a class='m-1 btn btn-success' href='{reverse_lazy('empleado-deactivate',kwargs={'pk':obj.pk} )}'>Activar</a>" 
 
         return f'{btn_1}{btn_2}{btn_3}{btn_4}' if obj.user.is_active else f'{btn_1}{btn_4}'
+    
+
+class OrdenTrabajoSerializer(serializers.ModelSerializer):
+    ver = serializers.SerializerMethodField()
+
+    class Meta:
+        model = OrdenTrabajo
+        fields = "__all__"
+
+    def get_ver(self, obj):
+        btn_1 = f'<a class="m-1 btn btn-outline-primary" href="{reverse_lazy("ver_orden_de_compra", kwargs={"pk": obj.pk})}">Ver</a>'
+        btn_2 = f"<a class='m-1 btn btn-outline-info' href='{reverse_lazy('modificar_orden_de_compra', kwargs={'pk': obj.pk})}'>Modificar</a>"
+        btn_3 = f"<a class='m-1 btn btn-danger' href='{reverse_lazy('eliminar_orden_de_compra', kwargs={'pk': obj.pk})}'>Eliminar</a>"
+        btn_4 = f"<a class='m-1 btn btn-outline-danger' href='{reverse_lazy('generar_pdf_orden_de_compra', kwargs={'pk': obj.pk})}'>PDF</a>"
+
+        return f'{btn_1}{btn_2}{btn_3}{btn_4}'
 
 
 
