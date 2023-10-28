@@ -134,12 +134,43 @@
         </div>
       </div>
     </div>
-    <div class="card-footer">
+    <div class="card-footer text-center">
+      <!-- Agregar el modal para rechazar -->
+      <div class="modal fade" id="rechazarModal" tabindex="-1" role="dialog" aria-labelledby="rechazarModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="rechazarModalLabel">Rechazar Cotización</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form action="{% url 'cotizacion-rechazar' pk=object.pk %}" method="post">
+              {% csrf_token %}
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="comentario"><b style="color:red;">*</b> Comentario de Rechazo</label>
+                  <textarea class="form-control" name="comentarioRechazo" id="comentarioRechazo" rows="3" required></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Enviar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
       {% if object.activo %}
-          <a class="btn btn-outline-secondary" href='{% url "cotizacion-update" pk=object.pk %}'>Modificar</a>
+        <h3>Acciones</h3>
+        {% if object.estatus == 'VIGENTE' %}
+          <a class="btn btn-success" href="{% url 'cotizacion-aceptar' pk=object.pk %}" style="margin-right: 10px">Aceptar</a>
+          <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#rechazarModal" style="margin-right: 10px">Rechazar</button>
+          <a class="btn btn-outline-secondary" href='{% url "cotizacion-update" pk=object.pk %}' style="margin-right: 10px">Modificar</a>     
+        {% endif %}
+
       {% endif %}
       <a class="btn btn-outline-info" href='{% url "cotizaciones-lista"%}'>Regresar</a>
-      </div>
+    </div>
 
   </div>
 </div>

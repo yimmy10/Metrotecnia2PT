@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404
 from django.forms import formset_factory,modelformset_factory
 from django.views.generic import View
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.contrib import messages
 
 import os
 from django.conf import settings
@@ -105,6 +106,7 @@ class cotizacionListView(ListView):
     context =  super().get_context_data(**kwargs)
     context['btn_url'] = reverse_lazy('cotizaciones-d-lista')
     context['btn_act'] = "Ver cotizaciones borradas"
+
     return context
 
 class cotizacionDeactivateListView(ListView):
@@ -316,6 +318,31 @@ class cotizacionUpdateView(UpdateView):
       return render(request, self.template_name, context)
 
     return redirect(reverse_lazy("cotizaciones-lista"))
+
+def aceptar_cotizacion(request, pk):
+    cotizacion = get_object_or_404(Cotizacion, pk=pk)
+    
+    if cotizacion.estatus == 'VIGENTE':
+        cotizacion.estatus = 'ACEPTADA'
+        cotizacion.save()
+    
+    # Redirige al usuario de regreso a la lista de cotizaciones
+    return redirect('cotizaciones-lista')
+
+def rechazar_cotizacion(request, pk):
+    if request.method == 'POST':
+        cotizacion = get_object_or_404(Cotizacion, pk=pk)
+        comentario = request.POST.get('comentarioRechazo', '')
+
+        if comentario:
+            cotizacion.estatus = 'RECHAZADA'
+            cotizacion.comentarioRechazo = comentario
+            cotizacion.save()
+            return redirect('cotizaciones-lista')
+        else:
+            return JsonResponse({'success': False, 'error': 'El comentario de rechazo es obligatorio.'})
+
+    return JsonResponse({'success': False, 'error': 'Método no permitido.'})
 
 
 class employeePasswordUpdate(TemplateView):

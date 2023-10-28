@@ -50,7 +50,15 @@ class Empleado(models.Model):
 
     def get_absolute_url(self):
         return reverse("empleado_detail", kwargs={"pk": self.pk})
-
+    
+VIGENTE = 'VIGENTE'
+ACEPTADA = 'ACEPTADA'
+RECHAZADA = 'RECHAZADA'
+STATUS_CHOICES = (
+    (VIGENTE, 'vigente'),
+    (ACEPTADA, 'aceptada'),
+    (RECHAZADA, 'rechazada'),
+)
 
 class Cotizacion(models.Model):
 
@@ -66,6 +74,8 @@ class Cotizacion(models.Model):
     notas_internas = models.CharField(max_length=100,blank=True,null=True)
     urgente =  models.BooleanField(default=0)
     activo = models.BooleanField(default=True)
+    estatus = models.CharField(max_length=255, default='VIGENTE', choices=STATUS_CHOICES)
+    comentarioRechazo = models.CharField(max_length=255,blank=True, null=True)
 
     class Meta:
         verbose_name = ("Cotizacion")
@@ -73,7 +83,7 @@ class Cotizacion(models.Model):
 
     def __str__(self):
         return self.pk.__str__()
-
+    
 class Servicio(models.Model):
 
     cantidad =  models.IntegerField()
@@ -130,3 +140,22 @@ class ServicioEspecial(models.Model):
 
     def __str__(self):
         return self.pk
+    
+class OrdenTrabajo(models.Model):
+    codigoOT = models.CharField(max_length = 255)
+    nombre = models.CharField(max_length=255)
+    fecha = models.DateField()
+    declaraconf = models.BooleanField(default=0)
+    ordenCompra = models.IntegerField()
+    notas = models.CharField(max_length = 255)
+    serie = models.CharField(max_length = 255)
+    id_Products = models.CharField(max_length = 255)
+    notas_especiales = models.CharField(max_length = 255)
+    cotizacion_id = models.ForeignKey(Cotizacion, on_delete=models.CASCADE)
+    
+    class Meta:
+        verbose_name = ("OrdenTrabajo")
+        verbose_name_plural = ("OrdenTrabajos")
+
+    def __str__(self):
+        return self.pk.__str__()
