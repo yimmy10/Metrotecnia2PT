@@ -58,7 +58,7 @@ urlpatterns = [
     path('cotizacion-pdf/<int:cotizacion_id>/', permission_required(['web.ver_cotizaciones'],raise_exception=True)(CotizacionPdfView.as_view()), name='cotizacionPdf'),
 
     path('crear-ordentrabajo',permission_required(['web.ver_cotizaciones'],raise_exception=True)(OrdenTrabajoCreateView.as_view()), name="crear-ordentrabajo"),
-
+    path('ordenTrabajo-lista',permission_required(['web.ver_cotizaciones'],raise_exception=True)(OrdenTrabajoListView.as_view()), name="ordenTrabajo-lista"),
 
 
     path('', include('django.contrib.auth.urls')),

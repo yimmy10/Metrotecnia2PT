@@ -130,3 +130,23 @@ class ServicioEspecial(models.Model):
 
     def __str__(self):
         return self.pk
+
+
+class OrdenTrabajo(models.Model):
+    codigoOT = models.CharField(max_length = 255)
+    nombre = models.CharField(max_length=255)
+    fecha = models.DateField()
+    declaraconf = models.BooleanField(default=0)
+    ordenCompra = models.IntegerField()
+    notas = models.CharField(max_length = 255)
+    serie = models.CharField(max_length = 255)
+    id_Product = models.CharField(max_length = 255)
+    notas_especiales = models.CharField(max_length = 255)
+    cotizacion_id = models.ForeignKey(Cotizacion, on_delete=models.CASCADE)
+    
+    class Meta:
+        verbose_name = ("OrdenTrabajo")
+        verbose_name_plural = ("OrdenTrabajos")
+
+    def _str_(self):
+        return self.pk._str_()

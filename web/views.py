@@ -11,6 +11,10 @@ from django.shortcuts import get_object_or_404
 from django.forms import formset_factory,modelformset_factory
 from django.views.generic import View
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from rest_framework.renderers import JSONRenderer
+from rest_framework.response import Response
+from .models import OrdenTrabajo
+
 
 import os
 from django.conf import settings
@@ -367,5 +371,29 @@ class CotizacionPdfView(View):
 
 class OrdenTrabajoCreateView (TemplateView):
       template_name = 'crear-ordenTrabajo.html'
+      def post(self, request, *args, **kwargs):
+          form = OrdenTrabajoForm(request.POST)
+          if form.is_valid():
+              form.save()
+              # Redirige a una página de éxito
+              return redirect('pagina_de_exito')
+          return self.render_to_response({'form': form})
+
+      def get_context_data(self, **kwargs):
+          context = super().get_context_data(**kwargs)
+          context['form'] = OrdenTrabajoForm()
+          return context
 
 
+
+class OrdenTrabajoListView(ListView):
+    model = OrdenTrabajo
+    template_name = "ordenTrabajo-lista.html"
+    context_object_name = 'ordenes'  # Nombre de la variable en la plantilla
+    paginate_by = 10  # Número de elementos por página
+
+    def get(self, request, *args, **kwargs):
+        ordenes = OrdenTrabajo.objects.all()
+        serializer = OrdenTrabajoSerializer(ordenes, many=True)
+        data = JSONRenderer().render(serializer.data)
+        return Response(data)
