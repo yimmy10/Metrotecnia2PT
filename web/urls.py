@@ -56,10 +56,17 @@ urlpatterns = [
     path('cotizacion-update/<int:pk>/',permission_required(['web.ver_cotizaciones'],raise_exception=True)(cotizacionUpdateView.as_view()), name="cotizacion-update"),
     path('cotizacion-deactivate/<int:id>/',permission_required(['web.ver_cotizaciones'],raise_exception=True)(cotizacionDeactivateView.as_view()), name="cotizacion-deactivate"),
     path('cotizacion-pdf/<int:cotizacion_id>/', permission_required(['web.ver_cotizaciones'],raise_exception=True)(CotizacionPdfView.as_view()), name='cotizacionPdf'),
-
+    
     path('crear-ordentrabajo',permission_required(['web.ver_cotizaciones'],raise_exception=True)(OrdenTrabajoCreateView.as_view()), name="crear-ordentrabajo"),
+<<<<<<< HEAD
     path('ordenTrabajo-lista',permission_required(['web.ver_cotizaciones'],raise_exception=True)(OrdenTrabajoListView.as_view()), name="ordenTrabajo-lista"),
 
+=======
+
+    #Ruta para aceptar y rechazar cotizaciones.
+    path('cotizacion-aceptar/<int:pk>/', aceptar_cotizacion, name='cotizacion-aceptar'),
+    path('cotizacion-rechazar/<int:pk>/', rechazar_cotizacion, name='cotizacion-rechazar'),
+>>>>>>> 2757e6a91d357c3267a3e93487aa6854dd4332cd
 
     path('', include('django.contrib.auth.urls')),
     path('api/', include(router.urls)),
