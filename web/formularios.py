@@ -155,6 +155,8 @@ class CotizacionForm(forms.ModelForm):
         exclude = [
             "cliente",
             'activo',
+            'estatus',
+            'comentarioRechazo',
         ]
 
         labels = {
@@ -245,7 +247,7 @@ class ServiciosForm(forms.ModelForm):
             'condicion': "Condición",
 
         }
-
+ 
 class ServiciosUpdateForm(forms.ModelForm):
 
     class Meta:
@@ -283,23 +285,33 @@ class ClienteUpdateForm(forms.ModelForm):
     # field_order = ['nombre', 'apellido', 'departamento', 'puesto', 'telefono', 'direccion']
 
 class CotizacionUpdateForm(forms.ModelForm):
-    # nombre = forms.CharField(max_length=60,required=False)
-    # apellido = forms.CharField(max_length=60,required=False)
-
     class Meta:
         model = Cotizacion
-        fields = ("__all__")
-        # exclude = ("user",)
+        fields = "__all__"
         labels = {
             'fecha_entrega': 'Tiempo de entrega',
+            'comentarioRechazo': 'Comentario de rechazo'
         }
 
-    # field_order = ['nombre', 'apellido', 'departamento', 'puesto', 'telefono', 'direccion']
+    def __init__(self, *args, **kwargs):
+        super(CotizacionUpdateForm, self).__init__(*args, **kwargs)
+
+        # Obtén el valor actual de estatus
+        estatus_actual = self.instance.estatus
+
+        # Personaliza los campos basados en el valor de estatus
+        if estatus_actual != "RECHAZADA":
+            self.fields['comentarioRechazo'].widget = forms.HiddenInput()
+            self.fields['estatus'].widget = forms.HiddenInput()
+        else:
+            self.fields['comentarioRechazo'].widget = forms.Textarea(attrs={'rows': 4, 'cols': 50})
+            self.fields['estatus'].widget = forms.HiddenInput()
 
 class UserPasswordChangeForm(AdminPasswordChangeForm):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super().__init__(user, *args, **kwargs)
+<<<<<<< HEAD
 
 
 class OrdenTrabajoForm(forms.ModelForm):
@@ -345,3 +357,5 @@ class OrdenTrabajoForm(forms.ModelForm):
 
 
 
+=======
+>>>>>>> 2757e6a91d357c3267a3e93487aa6854dd4332cd
