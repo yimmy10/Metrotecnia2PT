@@ -349,6 +349,7 @@ class OrdenTrabajoForm(forms.ModelForm):
         self.fields['fecha'].widget = forms.DateInput(attrs={'class': 'form-control', 'type': 'date'})
         self.fields['notas'].widget = forms.Textarea(attrs={'class': 'form-control', 'rows': 3})
         self.fields['notas_especiales'].widget = forms.Textarea(attrs={'class': 'form-control', 'rows': 3})
+        self.fields['cotizacion_id'].queryset = Cotizacion.objects.filter(estatus='ACEPTADA')
 
 
 

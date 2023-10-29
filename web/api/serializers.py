@@ -28,8 +28,8 @@ class CotizacionSerializer(serializers.ModelSerializer):
         btn_1 = f'<a class="m-1 btn btn-outline-primary" href="{reverse_lazy("cotizacion_detail", kwargs={"pk":obj.pk})}">Ver</a>'
         btn_2 = f"<a class='m-1 btn btn-outline-info' href='{reverse_lazy('cotizacion-update', kwargs={'pk':obj.pk})}'>Modificar</a>"
         btn_3 = f"<a class='m-1 btn btn-danger' href='{reverse_lazy('cotizacion-deactivate',kwargs={'id':obj.pk} )}'>Eliminar</a>" if obj.activo else f"<a class='m-1 btn btn-success' href='{reverse_lazy('cotizacion-deactivate',kwargs={'id':obj.pk} )}'>Activar</a>" 
-        btn_4 = f"<a class='m-1 btn btn-outline-danger'>PDF</a>"
-        return f'{btn_1}{btn_2}{btn_3}{btn_4}' if obj.activo and obj.estatus == "VIGENTE" else f'{btn_1}{btn_3}'
+        btn_4 = f'<a class="m-1 btn btn-outline-danger" href="{reverse_lazy("cotizacionPdf", kwargs={"cotizacion_id": obj.pk})}">PDF</a>'
+        return f'{btn_1}{btn_2}{btn_3}{btn_4}' if obj.activo and obj.estatus == "vigente" else f'{btn_1}{btn_3}'
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

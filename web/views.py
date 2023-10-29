@@ -326,7 +326,7 @@ class cotizacionUpdateView(UpdateView):
 def aceptar_cotizacion(request, pk):
     cotizacion = get_object_or_404(Cotizacion, pk=pk)
     
-    if cotizacion.estatus == 'VIGENTE':
+    if cotizacion.estatus == 'vigente':
         cotizacion.estatus = 'ACEPTADA'
         cotizacion.save()
     
@@ -403,7 +403,7 @@ class OrdenTrabajoCreateView (TemplateView):
           if form.is_valid():
               form.save()
               # Redirige a una página de éxito
-              return redirect('pagina_de_exito')
+              return redirect('ordenTrabajo-lista')
           return self.render_to_response({'form': form})
 
       def get_context_data(self, **kwargs):
@@ -419,8 +419,7 @@ class OrdenTrabajoListView(ListView):
     context_object_name = 'ordenes'  # Nombre de la variable en la plantilla
     paginate_by = 10  # Número de elementos por página
 
-    def get(self, request, *args, **kwargs):
-        ordenes = OrdenTrabajo.objects.all()
-        serializer = OrdenTrabajoSerializer(ordenes, many=True)
-        data = JSONRenderer().render(serializer.data)
-        return Response(data)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['btn_url'] = reverse_lazy('ordenTrabajo-lista')
+        return context
