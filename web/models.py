@@ -50,7 +50,15 @@ class Empleado(models.Model):
 
     def get_absolute_url(self):
         return reverse("empleado_detail", kwargs={"pk": self.pk})
-
+    
+VIGENTE = 'VIGENTE'
+ACEPTADA = 'ACEPTADA'
+RECHAZADA = 'RECHAZADA'
+STATUS_CHOICES = (
+    (VIGENTE, 'vigente'),
+    (ACEPTADA, 'aceptada'),
+    (RECHAZADA, 'rechazada'),
+)
 
 class Cotizacion(models.Model):
 
@@ -66,6 +74,8 @@ class Cotizacion(models.Model):
     notas_internas = models.CharField(max_length=100,blank=True,null=True)
     urgente =  models.BooleanField(default=0)
     activo = models.BooleanField(default=True)
+    estatus = models.CharField(max_length=255, default='VIGENTE', choices=STATUS_CHOICES)
+    comentarioRechazo = models.CharField(max_length=255,blank=True, null=True)
 
     class Meta:
         verbose_name = ("Cotizacion")
@@ -73,7 +83,7 @@ class Cotizacion(models.Model):
 
     def __str__(self):
         return self.pk.__str__()
-
+    
 class Servicio(models.Model):
 
     cantidad =  models.IntegerField()
