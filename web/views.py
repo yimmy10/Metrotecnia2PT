@@ -378,11 +378,15 @@ class CotizacionPdfView(View):
   def get (self, request, cotizacion_id, *args, **kwargs):
         cotizacion = get_object_or_404(Cotizacion, pk=cotizacion_id)
         servicios = Servicio.objects.filter(cotizacion=cotizacion)
+        subtotal = sum(servicio.cantidad * servicio.precio_unitario for servicio in servicios)
+        
+
         template = get_template('cotizaciones.html')
         context = {
            'title' : 'Resumen Cotizacion',
            'sale' : cotizacion,
            'servicios': servicios,
+            'subtotal': subtotal,
            
         }
         html = template.render(context)

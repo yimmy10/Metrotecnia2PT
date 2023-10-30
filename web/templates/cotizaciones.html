@@ -54,12 +54,15 @@
     }
 
     #invoice tbody tr {
-        padding: 0;
+        padding: 1;
+        border-bottom: 0.5px solid black;
     }
 
     .text-center{
         text-align: center;
     }
+
+    
 </style>
 <body>
 
@@ -79,32 +82,40 @@
         </head>
         <table id="invoice">
             <thead>
-            <tr>
-                <th style="width: 25%;">CANTIDAD</th>
-                <th style="width: 25%;">DESCRIPCION</th>
-                <th style="width: 25%;">P. UNITARIO</th>
-                <th style="width: 25%;">P. PARTIDA</th>
-            </tr>
+                <tr>
+                    <th style="width: 25%;">CANTIDAD</th>
+                    <th style="width: 25%;">DESCRIPCION</th>
+                    <th style="width: 25%;">P. UNITARIO</th>
+                    <th style="width: 25%;">P. PARTIDA</th>
+                </tr>
             </thead>
             <tbody>
-            {% for servicio in servicios  %}
+                {% for servicio in servicios %}
                 <tr {% if forloop.first %}style="padding-top: 3px;" {% endif %}>
-                    <li>{{ servicio.cantidad }} x {{ servicio.marca }} - {{ servicio.modelo }} - Precio: {{ servicio.precio_unitario }}</li>
+                    <td>{{ servicio.cantidad }}</td>
+                    <td>{{ servicio.marca }} - {{ servicio.modelo }}
+                        <br>
+                        {{ servicio.prueba }}
+                        <br>
+                        {{servicio.tipo_mantenimiento}}
+                    </td>
+                    <td>{{ servicio.precio_unitario }}</td>
+                    <td style="text-align: left;">{{ subtotal }}</td>
                 </tr>
-            {% endfor %}
+                {% endfor %}
+               
+            </tbody>
+        </table>
+        <table>
             <tr style="border-top: 1px solid black; padding-top: 4px;">
                 <td colspan="4"><b>SUBTOTAL</b></td>
-                <td style="text-align: left;">{{ sale.cliente }}</td>
             </tr>
             <tr style="padding-top: 0px;">
                 <td colspan="4"><b>IVA 12%</b></td>
-                <td style="text-align: left;">{{ sale.iva }}</td>
             </tr>
             <tr style="padding-top: 0px;">
                 <td colspan="4"><b>TOTAL A PAGAR</b></td>
-                <td style="text-align: left;">{{ sale.total }}</td>
             </tr>
-            </tbody>
         </table>
         <table style="margin-top: 250px;">
             <thead>
