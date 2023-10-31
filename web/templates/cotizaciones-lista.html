@@ -150,11 +150,11 @@
         'data': 'estatus',
         'render': function (data, type, row) {
           switch (data) {
-            case 'vigente':
+            case 'VIGENTE' || 'vigente':
               return '<span class="rounded bg-info text-white">' + data + '</span>';
-            case 'ACEPTADA':
+            case 'ACEPTADA' || 'aceptada':
               return '<span class="rounded bg-success text-white">' + data + '</span>';
-            case 'RECHAZADA':
+            case 'RECHAZADA' || 'rechazada':
               return '<span class="rounded bg-danger text-white">' + data + '</span>';
             default:
               return data;

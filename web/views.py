@@ -326,12 +326,22 @@ class cotizacionUpdateView(UpdateView):
 def aceptar_cotizacion(request, pk):
     cotizacion = get_object_or_404(Cotizacion, pk=pk)
     
-    if cotizacion.estatus == 'vigente':
+    if cotizacion.estatus == 'vigente' or cotizacion.estatus == 'VIGENTE':
         cotizacion.estatus = 'ACEPTADA'
         cotizacion.save()
     
     # Redirige al usuario de regreso a la lista de cotizaciones
     return redirect('cotizaciones-lista')
+
+def aceptar_ordenTrabajo(request, pk):
+    ordentrabajo = get_object_or_404(OrdenTrabajo, pk=pk)
+    
+    if ordentrabajo.estatus == 'vigente' or ordentrabajo.estatus == 'VIGENTE':
+        ordentrabajo.estatus = 'ACEPTADA'
+        ordentrabajo.save()
+    
+    # Redirige al usuario de regreso a la lista de cotizaciones
+    return redirect('ordenTrabajo-lista')
 
 def rechazar_cotizacion(request, pk):
     if request.method == 'POST':
@@ -348,6 +358,20 @@ def rechazar_cotizacion(request, pk):
 
     return JsonResponse({'success': False, 'error': 'Método no permitido.'})
 
+def rechazar_ordenTrabajo(request, pk):
+    if request.method == 'POST':
+        ordentrabajo = get_object_or_404(OrdenTrabajo, pk=pk)
+        comentario = request.POST.get('comentarioRechazo', '')
+
+        if comentario:
+            ordentrabajo.estatus = 'RECHAZADA'
+            ordentrabajo.comentarioRechazo = comentario
+            ordentrabajo.save()
+            return redirect('ordenTrabajo-lista')
+        else:
+            return JsonResponse({'success': False, 'error': 'El comentario de rechazo es obligatorio.'})
+
+    return JsonResponse({'success': False, 'error': 'Método no permitido.'})
 
 class employeePasswordUpdate(TemplateView):
     template_name = 'forms.html'

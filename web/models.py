@@ -153,6 +153,8 @@ class OrdenTrabajo(models.Model):
     id_Product = models.CharField(max_length = 255)
     notas_especiales = models.CharField(max_length = 255)
     cotizacion_id = models.ForeignKey(Cotizacion, on_delete=models.CASCADE)
+    estatus = models.CharField(max_length=255, default='VIGENTE', choices=STATUS_CHOICES)
+    comentarioRechazo = models.CharField(max_length=255,blank=True, null=True)
     
     class Meta:
         verbose_name = ("OrdenTrabajo")

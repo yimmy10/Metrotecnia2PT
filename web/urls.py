@@ -63,6 +63,9 @@ urlpatterns = [
     path('cotizacion-aceptar/<int:pk>/', aceptar_cotizacion, name='cotizacion-aceptar'),
     path('cotizacion-rechazar/<int:pk>/', rechazar_cotizacion, name='cotizacion-rechazar'),
 
+    path('ordenTrabajo-aceptar/<int:pk>/', aceptar_ordenTrabajo, name='ordenTrabajo-aceptar'),
+    path('ordenTrabajo-rechazar/<int:pk>/', rechazar_ordenTrabajo, name='ordenTrabajo-rechazar'),
+
     path('', include('django.contrib.auth.urls')),
     path('api/', include(router.urls)),
 

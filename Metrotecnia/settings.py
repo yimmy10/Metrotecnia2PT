@@ -141,12 +141,12 @@ WSGI_APPLICATION = 'Metrotecnia.wsgi.application'
 if DEBUG:
     DATABASES = {
         'default': {
-             'ENGINE': 'django.db.backends.mysql',
-             'NAME': 'ysgerman$metrotecnia',
-             'USER': 'root',
-             'PASSWORD': 'root',
-             'HOST': 'localhost',
-             'PORT': '3307',
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'ysGerman$metrotecnia',
+            'USER': 'root',
+            'PASSWORD': '',
+            'HOST': 'localhost',
+            'PORT': '3306',
         }
     }
 else:
