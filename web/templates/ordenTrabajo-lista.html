@@ -2,74 +2,6 @@
 
 {% block title %} Lista de ordenes de trabajo{% endblock %}
 
-{% block styles %}
-  <style>
-    .buttonText {
-      display: flex;
-      align-items: center;
-      align-content: center;
-      text-align: center;
-      align-self: center;
-    }
-
-    .info {
-      font-size: 20px;
-      border-radius: 15px;
-      position: relative;
-      display: block;
-    }
-    
-    .info .extra-info {
-      transition: all .2s ease;
-      display: none;
-      line-height: 30px;
-      font-size: 16px;
-      position: absolute;
-      top: 0;
-      right: 30px;
-      background-color: #fff;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      z-index: 999;
-      width: max-content;
-      white-space: nowrap;
-    }
-    
-    .info:hover .extra-info {
-      display: block;
-    }
-    
-    .info button {
-      font-size: 20px;
-      padding: 10px 20px;
-      border-radius: 20px;
-      background-color: transparent;
-      border: 1px solid #007bff;
-      color: #007bff;
-      cursor: pointer;
-    }
-      
-    .info button:hover {
-        background-color: #007bff;
-        color: #fff;
-    }
-
-    .iconcolor{
-      color: #007bff;
-      margin-right: 10px;
-    }
-
-    .headerStyle{
-      display: flex;
-      align-items: center;
-      align-content: center;
-      text-align: center;
-      align-self: center;
-    }
-  </style>
-{% endblock styles %}
-
 {% block content %}
 <div class="card">
   <div class="card-header">
@@ -120,8 +52,8 @@
       
     </div>
   </div>
-  <div class="card-body">
-    <table id="orden-compra-table" class="table responsive table-striped table-bordered">
+  <div class="card-body table-responsive">
+    <table id="orden-compra-table" class="table table-striped table-bordered">
         <thead class="thead-dark">
             <th scope="col"># Orden de Trabajo</th>
             <th scope="col">Codigo OT</th>
@@ -139,12 +71,16 @@
                     <td>{{ orden.nombre }}</td>
                     <td>{{ orden.fecha }}</td>
                     <td>{{ orden.cotizacion_id }}</td>
-                    {% if orden.estatus == "VIGENTE" or orden.estatus == "vigente" %}
-                      <td><span class="rounded bg-info text-white">VIGENTE</span></td>
-                    {% elif orden.estatus == "ACEPTADA" or orden.estatus == "aceptada" %}
-                      <td><span class="rounded bg-success text-white">ACEPTADA</span></td>
-                    {% elif orden.estatus == "RECHAZADA" or orden.estatus == "rechazada" %}
-                      <td><span class="rounded bg-danger text-white">RECHAZADA</span></td>
+                    {% if orden.estatus == "ESPERA" or orden.estatus == "espera" %}
+                      <td><span class="rounded text-white" style="background-color: #f4b083;">EN ESPERA</span></td>
+                    {% elif orden.estatus == "LABORATORIO" or orden.estatus == "LABORATORIO" %}
+                      <td><span class="rounded text-white" style="background-color: #adb9ca;">EN LABORATORIO</span></td>
+                    {% elif orden.estatus == "REVISION" or orden.estatus == "revision" %}
+                      <td><span class="rounded"style="background-color: #ffe598;">EN REVISIÓN</span></td>
+                    {% elif orden.estatus == "TERMINADO" or orden.estatus == "terminado" %}
+                      <td><span class="rounded"style="background-color: #c5e0b3;">TERMINADO</span></td>
+                    {% elif orden.estatus == "PAUSA" or orden.estatus == "pausa" %}
+                      <td><span class="rounded text-white"style="background-color: #ff9b9b;">EN PAUSA</span></td>
                     {% endif %}
                     <td><a href="{% url 'ordenTrabajo-lista'%}">Ver</a></td>
                 </tr>

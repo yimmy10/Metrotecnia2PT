@@ -141,7 +141,18 @@ class ServicioEspecial(models.Model):
     def __str__(self):
         return self.pk
 
-
+ESPERA = 'ESPERA'
+LABORATORIO = 'LABORATORIO'
+REVISION = 'REVISION'
+TERMINADO = 'TERMINADO'
+PAUSA = 'PAUSA'
+STATUS_ORDEN = (
+    (ESPERA, 'ESPERA'),
+    (LABORATORIO, 'LABORATORIO'),
+    (REVISION, 'REVISION'),
+    (TERMINADO, 'TERMINADO'),
+    (PAUSA, 'PAUSA'),
+)
 class OrdenTrabajo(models.Model):
     codigoOT = models.CharField(max_length = 255)
     nombre = models.CharField(max_length=255)
@@ -153,8 +164,9 @@ class OrdenTrabajo(models.Model):
     id_Product = models.CharField(max_length = 255)
     notas_especiales = models.CharField(max_length = 255)
     cotizacion_id = models.ForeignKey(Cotizacion, on_delete=models.CASCADE)
-    estatus = models.CharField(max_length=255, default='VIGENTE', choices=STATUS_CHOICES)
+    estatus = models.CharField(max_length=255, default='ESPERA', choices=STATUS_ORDEN)
     comentarioRechazo = models.CharField(max_length=255,blank=True, null=True)
+    activo = models.BooleanField(default=True)
     
     class Meta:
         verbose_name = ("OrdenTrabajo")

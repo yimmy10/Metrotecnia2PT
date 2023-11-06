@@ -2,74 +2,6 @@
 
 {% block title %} Lista de cotizaciones {% endblock %}
 
-{% block styles %}
-  <style>
-    .buttonText {
-      display: flex;
-      align-items: center;
-      align-content: center;
-      text-align: center;
-      align-self: center;
-    }
-
-    .info {
-      font-size: 20px;
-      border-radius: 15px;
-      position: relative;
-      display: block;
-    }
-    
-    .info .extra-info {
-      transition: all .2s ease;
-      display: none;
-      line-height: 30px;
-      font-size: 16px;
-      position: absolute;
-      top: 0;
-      right: 30px;
-      background-color: #fff;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      z-index: 999;
-      width: max-content;
-      white-space: nowrap;
-    }
-    
-    .info:hover .extra-info {
-      display: block;
-    }
-    
-    .info button {
-      font-size: 20px;
-      padding: 10px 20px;
-      border-radius: 20px;
-      background-color: transparent;
-      border: 1px solid #007bff;
-      color: #007bff;
-      cursor: pointer;
-    }
-      
-    .info button:hover {
-        background-color: #007bff;
-        color: #fff;
-    }
-
-    .iconcolor{
-      color: #007bff;
-      margin-right: 10px;
-    }
-
-    .headerStyle{
-      display: flex;
-      align-items: center;
-      align-content: center;
-      text-align: center;
-      align-self: center;
-    }
-  </style>
-{% endblock styles %}
-
 {% block content %}
 <div class="card">
   <div class="card-header">
@@ -78,6 +10,7 @@
         <h1>  Lista de cotizaciones {{ del_text }}</h1>
       </div>
       
+      <!-- Sección del botón de información -->
       <div class="col">
         <div class="info">
           <button type="button" class="btn btn-outline-info btn-elevate btn-circle pulse circle">
@@ -89,34 +22,61 @@
               <div class="card-header headerStyle">
                 <i class="fa fa-info-circle fa-2x iconcolor" aria-hidden="true"></i> <b>Ayuda en lista de cotizaciones</b>
               </div>
+              
+              <!-- Información de las acciones que puede realizar el usuario -->
               <div class="card-body" style="background-color: #f2f2f2">
-                <h5 class="card-title text-center">Se despliega la lista de cotizaciones subidas, puedes realizar las siguientes acciones:</h5>
+                <h5 class="card-title text-center mb-3">Se despliega la lista de cotizaciones subidas, puedes realizar las siguientes acciones:</h5>
 
                 <div class="buttonText">
                   <a class="btn btn-outline-primary" style="margin-right: 10px;">Ver</a>
-                  <p class="text-primary">El botón Ver nos ayudará a conocer toda la información agregada en la cotización, datos del cliente y el servicio que se realizará.</p>
+                  <p class="text-primary">El botón <b>Ver</b> nos ayudará a conocer toda la información agregada en la cotización, datos del cliente y el servicio que se realizará.</p>
                 </div>
                 
                 <div class="buttonText">
                   <a class="btn btn-outline-info" style="margin-right: 10px;">Modificar</a>
-                  <p class="text-info">Con el botón Modificar puedes editar una cotización, solamente puedes editar el servicio.</p>
+                  <p class="text-info">El botón <b>Modificar</b> puede editar una cotización en específico, solamente puedes editar el servicio.</p>
                 </div>
     
                 <div class="buttonText">
                   <a class="btn btn-danger" style="margin-right: 10px;">Eliminar</a>
-                  <p class="text-danger">El botón Eliminar desactivará una cotización.</p>
+                  <p class="text-danger">El botón <b>Eliminar</b> desactivará una cotización.</p>
                 </div>
     
                 <div class="buttonText">
                   <a class="btn btn-success" style="margin-right: 10px;">Activar</a>
-                  <p class="text-success">El botón Activar permite activar nuevamente una cotización que fue desactivada con anterioridad.</p>
+                  <p class="text-success">El botón <b>Activar</b> permite activar nuevamente una cotización que fue desactivada con anterioridad.</p>
                 </div>
+
+                <div class="buttonText">
+                  <a class="btn btn-outline-danger" style="margin-right: 10px;">PDF</a>
+                  <p class="text-danger">El botón <b>PDF</b> transformará la cotización a un archivo PDF para impresión.</p>
+                </div>                
+              </div>
+              
+              <!-- Información de los estatus disponibles en esta sección -->
+              <div class="card-body" style="background-color: #f2f2f2">
+                <h5 class="card-title text-center mb-3">La cotización tiene los siguientes estatus:</h5>   
                 
+                <div class="buttonText">
+                  <span class="rounded bg-info text-white" style="margin-right: 10px;">VIGENTE</span>
+                  <p class="text-info">El estatus <b>VIGENTE</b> se obtiene en automatico cuando se crea una cotización.</p>
+                </div> 
+
+                <div class="buttonText">
+                  <span class="rounded bg-success text-white" style="margin-right: 10px;">ACEPTADA</span>
+                  <p class="text-success">El estatus <b>ACEPTADA</b> se obtiene cuando un administrador acepta la cotización y puede pasar a una orden de trabajo.</p>
+                </div> 
+
+                <div class="buttonText">
+                  <span class="rounded bg-danger text-white" style="margin-right: 10px;">RECHAZADA</span>
+                  <p class="text-danger">El estatus <b>RECHAZADA</b> se obtiene cuando un administrador rechaza la cotización.</p>
+                </div>   
               </div>
             </div>
           </div>
         </div>
       </div>
+      <!-- Termina sección del botón de información -->
       
     </div>
   </div>

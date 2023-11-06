@@ -2,74 +2,6 @@
 
 {% block title %} Lista de clientes {% endblock %}
 
-{% block styles %}
-  <style>
-    .buttonText {
-      display: flex;
-      align-items: center;
-      align-content: center;
-      text-align: center;
-      align-self: center;
-    }
-
-    .info {
-      font-size: 20px;
-      border-radius: 15px;
-      position: relative;
-      display: block;
-    }
-    
-    .info .extra-info {
-      transition: all .2s ease;
-      display: none;
-      line-height: 30px;
-      font-size: 16px;
-      position: absolute;
-      top: 0;
-      right: 30px;
-      background-color: #fff;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      z-index: 999;
-      width: max-content;
-      white-space: nowrap;
-    }
-    
-    .info:hover .extra-info {
-      display: block;
-    }
-    
-    .info button {
-      font-size: 20px;
-      padding: 10px 20px;
-      border-radius: 20px;
-      background-color: transparent;
-      border: 1px solid #007bff;
-      color: #007bff;
-      cursor: pointer;
-    }
-    
-    .info button:hover {
-      background-color: #007bff;
-      color: #fff;
-    }
-
-    .iconcolor{
-      color: #007bff;
-      margin-right: 10px;
-    }
-
-    .headerStyle{
-      display: flex;
-      align-items: center;
-      align-content: center;
-      text-align: center;
-      align-self: center;
-    }
-  </style>
-{% endblock styles %}
-
 {% block content %}
 <div class="card">
   <div class="card-header">
@@ -120,8 +52,8 @@
     </div>
 
   </div>
-  <div class="card-body">
-    <table id="clientes-table" class="table responsive table-striped table-bordered" style="width:100%" data-server-side="true" data-ajax="{% url 'cliente-list' %}?format=datatables{% if deleted %}&deleted=t{%endif%}">
+  <div class="card-body table-responsive">
+    <table id="clientes-table" class="table table-striped table-bordered" style="width:100%" data-server-side="true" data-ajax="{% url 'cliente-list' %}?format=datatables{% if deleted %}&deleted=t{%endif%}">
       <thead class="thead-dark">
         <tr>
           <th data-data='razon_social' scope="col">Cliente</th>

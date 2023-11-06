@@ -54,6 +54,34 @@ def update_data():
         'paper_bgcolor': 'rgba(0,0,0,0)'},
     )
 
+    ##########################################################################
+
+    cotitype = Cotizacion.objects.filter(activo = True).values("estatus")
+
+    df = pd.DataFrame(cotitype)
+    df = df.groupby("estatus").size().reset_index(name="count")
+
+    # Crear la gráfica de pastel con los datos agregados
+    cotitypefig = px.pie(df, values="count", names="estatus")
+    cotitypefig.update_layout(
+        {'plot_bgcolor': 'rgba(0,0,0,0)',
+        'paper_bgcolor': 'rgba(0,0,0,0)'},
+    )
+
+    ##########################################################################
+
+    ordentype = OrdenTrabajo.objects.filter(activo = True).values("estatus")
+
+    df = pd.DataFrame(ordentype)
+    df = df.groupby("estatus").size().reset_index(name="count")
+
+    # Crear la gráfica de pastel con los datos agregados
+    ordentypefig = px.pie(df, values="count", names="estatus")
+    ordentypefig.update_layout(
+        {'plot_bgcolor': 'rgba(0,0,0,0)',
+        'paper_bgcolor': 'rgba(0,0,0,0)'},
+    )
+
     #########################################################################
     
       #Entradas de aire
@@ -146,8 +174,9 @@ def update_data():
         margin={'t': 40, 'b': 0, 'l': 0, 'r': 0},
         paper_bgcolor="white",
     )
-    ########################################################################
     
+    #######################################################################
+
     suma = Servicio.objects.filter(cotizacion__activo=True).count()
 
     # Crear el indicador numérico
@@ -164,9 +193,187 @@ def update_data():
         margin={'t': 40, 'b': 0, 'l': 0, 'r': 0},
         paper_bgcolor="white",
     )
+
+    ########################################################################
     
+    # Obtener número de cotizaciones vigentes.
+    cotivig = Cotizacion.objects.filter(estatus__iexact='vigente', activo=True).count()
+
+    # Crear el indicador numérico
+    cotivig_sum = go.Figure(go.Indicator(
+        mode = "number",
+        value = cotivig,
+        title = {'text': "Cotizaciones Vigentes"},
+    ))
+
+     # Personalizar el layout del gráfico
+    cotivig_sum.update_layout(
+        width=300,
+        height=150,
+        margin={'t': 40, 'b': 0, 'l': 0, 'r': 0},
+        paper_bgcolor="white",
+    )
+
+    ########################################################################
+    
+    # Obtener número de cotizaciones aceptadas.
+    cotiacp = Cotizacion.objects.filter(estatus__iexact='aceptada', activo=True).count()
+
+    # Crear el indicador numérico
+    cotiacp_sum = go.Figure(go.Indicator(
+        mode = "number",
+        value = cotiacp,
+        title = {'text': "Cotizaciones Aceptadas"},
+    ))
+
+     # Personalizar el layout del gráfico
+    cotiacp_sum.update_layout(
+        width=300,
+        height=150,
+        margin={'t': 40, 'b': 0, 'l': 0, 'r': 0},
+        paper_bgcolor="white",
+    )
+
+    ########################################################################
+    
+    # Obtener número de cotizaciones rechazadas.
+    cotirec = Cotizacion.objects.filter(estatus__iexact='rechazada', activo=True).count()
+
+    # Crear el indicador numérico
+    cotirec_sum = go.Figure(go.Indicator(
+        mode = "number",
+        value = cotirec,
+        title = {'text': "Cotizaciones Rechazadas"},
+    ))
+
+     # Personalizar el layout del gráfico
+    cotirec_sum.update_layout(
+        width=300,
+        height=150,
+        margin={'t': 40, 'b': 0, 'l': 0, 'r': 0},
+        paper_bgcolor="white",
+    )
+
+    ########################################################################
+    
+    # Obtener el número de órdenes de trabajo realizadas
+    num_ordentrabajo = OrdenTrabajo.objects.filter(activo = True).count()
+
+    # Crear el indicador numérico
+    OT_sum = go.Figure(go.Indicator(
+        mode = "number",
+        value = num_ordentrabajo, 
+        title = {'text': "Total de Órdenes"},
+    ))
+    
+    OT_sum.update_layout(
+        width=300,
+        height=150,
+        margin={'t': 40, 'b': 0, 'l': 0, 'r': 0},
+        paper_bgcolor="white",
+    )
+
+    ########################################################################
+    
+    # Obtener número de órdenes de trabajo en espera.
+    num_espera = OrdenTrabajo.objects.filter(estatus__iexact='espera', activo=True).count()
+
+    # Crear el indicador numérico
+    ordenEspera = go.Figure(go.Indicator(
+        mode = "number",
+        value = num_espera,
+        title = {'text': "Órdenes en Espera"},
+    ))
+
+     # Personalizar el layout del gráfico
+    ordenEspera.update_layout(
+        width=300,
+        height=150,
+        margin={'t': 40, 'b': 0, 'l': 0, 'r': 0},
+        paper_bgcolor="white",
+    )
+
+    ########################################################################
+    
+    # Obtener número de órdenes de trabajo en laboratorio.
+    num_lab = OrdenTrabajo.objects.filter(estatus__iexact='laboratorio', activo=True).count()
+
+    # Crear el indicador numérico
+    ordenLab = go.Figure(go.Indicator(
+        mode = "number",
+        value = num_lab,
+        title = {'text': "Órdenes en Laboratorio"},
+    ))
+
+     # Personalizar el layout del gráfico
+    ordenLab.update_layout(
+        width=300,
+        height=150,
+        margin={'t': 40, 'b': 0, 'l': 0, 'r': 0},
+        paper_bgcolor="white",
+    )
+
+    ########################################################################
+    
+    # Obtener número de órdenes de trabajo en revision.
+    num_rev = OrdenTrabajo.objects.filter(estatus__iexact='revision', activo=True).count()
+
+    # Crear el indicador numérico
+    ordenRev = go.Figure(go.Indicator(
+        mode = "number",
+        value = num_rev,
+        title = {'text': "Órdenes en Revisión"},
+    ))
+
+     # Personalizar el layout del gráfico
+    ordenRev.update_layout(
+        width=300,
+        height=150,
+        margin={'t': 40, 'b': 0, 'l': 0, 'r': 0},
+        paper_bgcolor="white",
+    )
+
+    ########################################################################
+    
+    # Obtener número de órdenes de trabajo terminadas.
+    num_ter = OrdenTrabajo.objects.filter(estatus__iexact='terminado', activo=True).count()
+
+    # Crear el indicador numérico
+    ordenTer = go.Figure(go.Indicator(
+        mode = "number",
+        value = num_ter,
+        title = {'text': "Órdenes Terminadas"},
+    ))
+
+     # Personalizar el layout del gráfico
+    ordenTer.update_layout(
+        width=300,
+        height=150,
+        margin={'t': 40, 'b': 0, 'l': 0, 'r': 0},
+        paper_bgcolor="white",
+    )
+
+    ########################################################################
+    
+    # Obtener número de órdenes de trabajo en Pausa.
+    num_pau = OrdenTrabajo.objects.filter(estatus__iexact='terminado', activo=True).count()
+
+    # Crear el indicador numérico
+    ordenPau = go.Figure(go.Indicator(
+        mode = "number",
+        value = num_pau,
+        title = {'text': "Órdenes en Pausa"},
+    ))
+
+     # Personalizar el layout del gráfico
+    ordenPau.update_layout(
+        width=300,
+        height=150,
+        margin={'t': 40, 'b': 0, 'l': 0, 'r': 0},
+        paper_bgcolor="white",
+    )
+
     #######################################################################
-    
     
     sumaval = Servicio.objects.filter(cotizacion__activo=True).aggregate(total_suma=models.Sum('cantidad'))['total_suma']
 
@@ -386,7 +593,7 @@ def update_data():
     )
     ##########################################################################
     
-    return MS, pie, paire, paieajuste, modelos, fig, cot, sum, acre, mapacli, clisum, correc, sumva, preven, presion
+    return MS, pie, paire, paieajuste, modelos, fig, cot, sum, acre, mapacli, clisum, correc, sumva, preven, presion, OT_sum, cotivig_sum, cotiacp_sum, cotirec_sum, cotitypefig, ordenEspera, ordenLab, ordenRev, ordenTer, ordenPau, ordentypefig
 
 # Define el layout de la aplicación
 app.layout = dbc.Container(
@@ -394,7 +601,7 @@ app.layout = dbc.Container(
         dbc.CardBody(
             [
         dbc.Row([
-                dbc.Col(html.H1("Datos generados en plataforma web Metrotecnia S.A de C.V", style={'text-align': 'center'}), width={'size': 12})
+                dbc.Col(html.H1("Datos generados en plataforma web Metrotecnia S.A de C.V", style={'text-align': 'center', 'margin-bottom': '5%'}), width={'size': 12})
             ]),
             dbc.Row([
                 dbc.Col(
@@ -404,19 +611,6 @@ app.layout = dbc.Container(
                                 dbc.CardBody(
                                     dcc.Graph(id='indicadorclisum', figure=go.Figure()),
                                     style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
-                                ),
-                                dbc.CardFooter()
-                            ]
-                        ),
-                        width={'size': 3}),
-                dbc.Col(
-                    dbc.Card(
-                            [
-                                dbc.CardHeader(),
-                                dbc.CardBody(
-                                    dcc.Graph(id='indicadorcot', figure=go.Figure()),
-                                    style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
-
                                 ),
                                 dbc.CardFooter()
                             ]
@@ -448,146 +642,285 @@ app.layout = dbc.Container(
                         ),
                         width={'size': 3})
             ]),
-            dbc.Row(dbc.Col(html.H1("Información de clientes", style={'text-align': 'center'}), width={'size': 12}),),
-
-                        dbc.Row([
+            dbc.Row(dbc.Col(html.H1("Información de clientes", style={'text-align': 'center', 'margin-bottom': '3%', 'margin-top': '5%'}), width={'size': 12}),),
+            dbc.Row([
                 dbc.Col(                        
-                        dbc.Card(
-                            [
-                                dbc.CardHeader("Cotizaciones generadas por los clientes"),
-                                dbc.CardBody(
-                                    dcc.Graph(id='fig', figure=go.Figure())
-                                ),
-                                dbc.CardFooter()
-                            ]
-                        ),width={'size': 12}),
+                    dbc.Card(
+                        [
+                            dbc.CardHeader("Cotizaciones generadas por los clientes"),
+                            dbc.CardBody(
+                                dcc.Graph(id='fig', figure=go.Figure())
+                            ),
+                            dbc.CardFooter()
+                        ]
+                    ),width={'size': 12}),
             ]),
             dbc.Row([
                 dbc.Col(
-                        dbc.Card(
-                            [
-                                dbc.CardHeader("Mapa de ubicaciones de los clientes"),
-                                dbc.CardBody(
-                                dcc.Graph(id='mapacli', figure=go.Figure())
-                                ),
-                                dbc.CardFooter()
-                            ]
-                        ),width={'size': 12})
+                    dbc.Card(
+                        [
+                            dbc.CardHeader("Mapa de ubicaciones de los clientes"),
+                            dbc.CardBody(
+                                dcc.Graph(id='mapacli', figure=go.Figure()),
+                            ),
+                            dbc.CardFooter()
+                        ]
+                    ),style={'margin-top': '2%'}, width={'size': 12})
+            ]),
+            ###################### COTIZACIONES ######################
+            dbc.Row(dbc.Col(html.H1("Cotizaciones", style={'text-align': 'center', 'margin-bottom': '3%', 'margin-top': '5%'}), width={'size': 12}),),
+            dbc.Row([
+                dbc.Col(
+                    dbc.Card([
+                        dbc.CardHeader(),
+                        dbc.CardBody(
+                            dcc.Graph(id='indicadorcot', figure=go.Figure()),
+                            style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                            ),
+                        dbc.CardFooter()
+                    ]),
+                    width={'size': 3}
+                ),
+                dbc.Col(
+                    dbc.Card([
+                        dbc.CardHeader(),
+                        dbc.CardBody(
+                            dcc.Graph(id='indicadorcotvig', figure=go.Figure()),
+                            style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                            ),
+                        dbc.CardFooter()
+                    ]),
+                    width={'size': 3}
+                ),
+                dbc.Col(
+                    dbc.Card([
+                        dbc.CardHeader(),
+                        dbc.CardBody(
+                            dcc.Graph(id='indicadorcotacp', figure=go.Figure()),
+                            style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                            ),
+                        dbc.CardFooter()
+                    ]),
+                    width={'size': 3}
+                ),
+                dbc.Col(
+                    dbc.Card([
+                        dbc.CardHeader(),
+                        dbc.CardBody(
+                            dcc.Graph(id='indicadorcotrec', figure=go.Figure()),
+                            style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                            ),
+                        dbc.CardFooter()
+                    ]),
+                    width={'size': 3}
+                ),
+            ]),
+            dbc.Row([
+                dbc.Col(
+                    dbc.Card([
+                        dbc.CardHeader("Cotizaciones por estatus"),
+                        dbc.CardBody(
+                            dcc.Graph(id='cotitypefig', figure=go.Figure())
+                        ),
+                        dbc.CardFooter()
+                    ]),
+                    style={'margin-top': '2%'}, width={'size': 12}
+                ),
             ]),
             ######################VALVULAS Y MANTENIMIENTOS######################
-            dbc.Row(dbc.Col(html.H1("Información de Servicios", style={'text-align': 'center'}), width={'size': 12}),),
+            dbc.Row(dbc.Col(html.H1("Información de Servicios", style={'text-align': 'center', 'margin-bottom': '3%', 'margin-top': '5%'}), width={'size': 12}),),
             dbc.Row([
                 dbc.Col(
                     dbc.Card(
-                            [
-                                dbc.CardHeader(),
-                                dbc.CardBody(
-                                    dcc.Graph(id='indicadorvalvula', figure=go.Figure()),
-                                    style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
-                                ),
-                                dbc.CardFooter()
-                            ]
-                        ),
-                        width={'size': 3}),
+                        [
+                            dbc.CardHeader(),
+                            dbc.CardBody(
+                                dcc.Graph(id='indicadorvalvula', figure=go.Figure()),
+                                style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                            ),
+                            dbc.CardFooter()
+                        ]
+                    ),
+                    width={'size': 3}),
                 dbc.Col(
                     dbc.Card(
-                            [
-                                dbc.CardHeader(),
-                                dbc.CardBody(
-                                    dcc.Graph(id='indicadorcorrec', figure=go.Figure()),
-                                    style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
-
-                                ),
-                                dbc.CardFooter()
-                            ]
-                        ),
-                        width={'size': 3}),
+                        [
+                            dbc.CardHeader(),
+                            dbc.CardBody(
+                                dcc.Graph(id='indicadorcorrec', figure=go.Figure()),
+                                style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                            ),
+                            dbc.CardFooter()
+                        ]
+                    ),
+                    width={'size': 3}),
                 dbc.Col(
                     dbc.Card(
-                            [
-                                dbc.CardHeader(),
-                                dbc.CardBody(
-                                    dcc.Graph(id='indicadorpreven', figure=go.Figure()),
-                                    style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
-
-                                ),
-                                dbc.CardFooter()
-                            ]
-                        ),
-                        width={'size': 3}),
-                                dbc.Col(
+                        [
+                            dbc.CardHeader(),
+                            dbc.CardBody(
+                                dcc.Graph(id='indicadorpreven', figure=go.Figure()),
+                                style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                            ),
+                            dbc.CardFooter()
+                        ]
+                    ),
+                    width={'size': 3}),
+                dbc.Col(
                     dbc.Card(
-                            [
-                                dbc.CardHeader(),
-                                dbc.CardBody(
-                                    dcc.Graph(id='indicadorpresion', figure=go.Figure()),
-                                    style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
-
-                                ),
-                                dbc.CardFooter()
-                            ]
-                        ),
-                        width={'size': 3}),
+                        [
+                            dbc.CardHeader(),
+                            dbc.CardBody(
+                                dcc.Graph(id='indicadorpresion', figure=go.Figure()),
+                                style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                            ),
+                            dbc.CardFooter()
+                        ]
+                    ),
+                    width={'size': 3}),
             ]),
             dbc.Row([
-                    dbc.Col(
-                    dbc.Card(
-                            [
-                                dbc.CardHeader("Marcas de válvulas en servicios"),
-                                dbc.CardBody(
-                                    dcc.Graph(id='marca', figure=go.Figure())
-                                ),
-                                dbc.CardFooter()
-                            ]
-                        ),width={'size': 6}),
                 dbc.Col(
                     dbc.Card(
-                            [
-                                dbc.CardHeader("Tipo de prueba de válvula"),
-                                dbc.CardBody(
-                                    dcc.Graph(id='prueba', figure=go.Figure())
-                                ),
-                                dbc.CardFooter()
-                            ]
-                        ),width={'size': 6})
+                        [
+                            dbc.CardHeader("Marcas de válvulas en servicios"),
+                            dbc.CardBody(
+                                dcc.Graph(id='marca', figure=go.Figure())
+                            ),
+                            dbc.CardFooter()
+                        ]
+                    ), style={'margin-top': '2%'}, width={'size': 6}),
+                dbc.Col(
+                    dbc.Card(
+                        [
+                            dbc.CardHeader("Tipo de prueba de válvula"),
+                            dbc.CardBody(
+                                dcc.Graph(id='prueba', figure=go.Figure())
+                            ),
+                            dbc.CardFooter()
+                        ]
+                    ), style={'margin-top': '2%'}, width={'size': 6})
             ]),
             dbc.Row([
                 dbc.Col(                        
-                        dbc.Card(
-                            [
-                                dbc.CardHeader("Tipo de ajuste de presión"),
-                                dbc.CardBody(
-                                    dcc.Graph(id='ajuste', figure=go.Figure())
-                                ),
-                                dbc.CardFooter()
-                            ]
-                        ),width={'size': 6}
-                        ),
+                    dbc.Card(
+                        [
+                            dbc.CardHeader("Tipo de ajuste de presión"),
+                            dbc.CardBody(
+                                dcc.Graph(id='ajuste', figure=go.Figure())
+                            ),
+                            dbc.CardFooter()
+                        ]
+                    ), style={'margin-top': '2%'}, width={'size': 6}
+                ),
                 dbc.Col(                        
-                        dbc.Card(
-                            [
-                                dbc.CardHeader("Tipo de entrada nominal"),
-                                dbc.CardBody(
-                                    dcc.Graph(id='aire', figure=go.Figure())
-                                ),
-                                dbc.CardFooter()
-                            ]
-                        ),width={'size': 6})
+                    dbc.Card(
+                        [
+                            dbc.CardHeader("Tipo de entrada nominal"),
+                            dbc.CardBody(
+                                dcc.Graph(id='aire', figure=go.Figure())
+                            ),
+                            dbc.CardFooter()
+                        ]
+                    ),style={'margin-top': '2%'}, width={'size': 6})
             ]),
             dbc.Row([
                 dbc.Col(                        
-                        dbc.Card(
-                            [
-                                dbc.CardHeader("Modelo de válvulas"),
-                                dbc.CardBody(
-                                    dcc.Graph(id='modelo', figure=go.Figure()),
-                                ),
-                                dbc.CardFooter()
-                            ]
-                        ),width={'size': 12})
+                    dbc.Card(
+                        [
+                            dbc.CardHeader("Modelo de válvulas"),
+                            dbc.CardBody(
+                                dcc.Graph(id='modelo', figure=go.Figure()),
+                            ),
+                            dbc.CardFooter()
+                        ]
+                    ), style={'margin-top': '2%'}, width={'size': 12})
             ])
             ]
         ),
+        ###################### ORDENES DE TRABAJO ######################
+        dbc.Row(dbc.Col(html.H1("Órdenes de Trabajo", style={'text-align': 'center', 'margin-bottom': '3%', 'margin-top': '5%'}), width={'size': 12}),),
+        dbc.Row([
+            dbc.Col(
+                dbc.Card([
+                    dbc.CardHeader(),
+                    dbc.CardBody(
+                        dcc.Graph(id='indicadororden', figure=go.Figure()),
+                        style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                        ),
+                    dbc.CardFooter()
+                ]),
+                width={'size': 3}
+            ),
+            dbc.Col(
+                dbc.Card([
+                    dbc.CardHeader(),
+                    dbc.CardBody(
+                        dcc.Graph(id='indicadorordenEspera', figure=go.Figure()),
+                        style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                        ),
+                    dbc.CardFooter()
+                ]),
+                width={'size': 3}
+            ),
+            dbc.Col(
+                dbc.Card([
+                    dbc.CardHeader(),
+                    dbc.CardBody(
+                        dcc.Graph(id='indicadorordenLab', figure=go.Figure()),
+                        style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                        ),
+                    dbc.CardFooter()
+                ]),
+                width={'size': 3}
+            ),
+            dbc.Col(
+                dbc.Card([
+                    dbc.CardHeader(),
+                    dbc.CardBody(
+                        dcc.Graph(id='indicadorordenRev', figure=go.Figure()),
+                        style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                        ),
+                    dbc.CardFooter()
+                ]),
+                width={'size': 3}
+            ),
+            dbc.Col(
+                dbc.Card([
+                    dbc.CardHeader(),
+                    dbc.CardBody(
+                        dcc.Graph(id='indicadorordenTer', figure=go.Figure()),
+                        style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                        ),
+                    dbc.CardFooter()
+                ]),
+                style={'margin-top': '2%'}, width={'size': 3}
+            ),
+            dbc.Col(
+                dbc.Card([
+                    dbc.CardHeader(),
+                    dbc.CardBody(
+                        dcc.Graph(id='indicadorordenPau', figure=go.Figure()),
+                        style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                        ),
+                    dbc.CardFooter()
+                ]),
+                style={'margin-top': '2%'}, width={'size': 3}
+            ),
+        ]),
+        dbc.Row([
+                dbc.Col(
+                    dbc.Card([
+                        dbc.CardHeader("Órdenes de trabajo por estatus"),
+                        dbc.CardBody(
+                            dcc.Graph(id='ordentypefig', figure=go.Figure())
+                        ),
+                        dbc.CardFooter()
+                    ]),
+                    style={'margin-top': '2%'}, width={'size': 12}
+                ),
+            ]),
+        
         dbc.CardFooter(),
         dcc.Interval(
             id='interval-component',
@@ -613,12 +946,23 @@ app.layout = dbc.Container(
     Output(component_id='indicadorcorrec', component_property='figure'),
     Output(component_id='indicadorvalvula', component_property='figure'),
     Output(component_id='indicadorpreven', component_property='figure'),
-    Output(component_id='indicadorpresion', component_property='figure')],
+    Output(component_id='indicadorpresion', component_property='figure'),
+    Output(component_id='indicadororden', component_property='figure'),
+    Output(component_id='indicadorcotvig', component_property='figure'),
+    Output(component_id='indicadorcotacp', component_property='figure'),
+    Output(component_id='indicadorcotrec', component_property='figure'),
+    Output(component_id='cotitypefig', component_property='figure'),
+    Output(component_id='indicadorordenEspera', component_property='figure'),
+    Output(component_id='indicadorordenLab', component_property='figure'),
+    Output(component_id='indicadorordenRev', component_property='figure'),
+    Output(component_id='indicadorordenTer', component_property='figure'),
+    Output(component_id='indicadorordenPau', component_property='figure'),
+    Output(component_id='ordentypefig', component_property='figure')],
     [Input(component_id='interval-component', component_property='n_intervals')]
 )
 def update_graphs(n):
-    MS, pie, paire, paieajuste, modelos, fig, indicadorcot, indicadorser, indicadoracre, mapacli, indicadorclisum, indicadorcorrec, indicadorvalvula, indicadorpreven, indicadorpresion= update_data()
-    return MS, pie, paire, paieajuste, modelos, fig, indicadorcot, indicadorser, indicadoracre, mapacli, indicadorclisum, indicadorcorrec, indicadorvalvula, indicadorpreven, indicadorpresion
+    MS, pie, paire, paieajuste, modelos, fig, indicadorcot, indicadorser, indicadoracre, mapacli, indicadorclisum, indicadorcorrec, indicadorvalvula, indicadorpreven, indicadorpresion, indicadororden, indicadorcotvig, indicadorcotacp, indicadorcotrec, cotitypefig, indicadorordenEspera, indicadorordenLab, indicadorordenRev, indicadorordenTer, indicadorordenPau, ordentypefig= update_data()
+    return MS, pie, paire, paieajuste, modelos, fig, indicadorcot, indicadorser, indicadoracre, mapacli, indicadorclisum, indicadorcorrec, indicadorvalvula, indicadorpreven, indicadorpresion, indicadororden, indicadorcotvig, indicadorcotacp, indicadorcotrec, cotitypefig, indicadorordenEspera, indicadorordenLab, indicadorordenRev, indicadorordenTer, indicadorordenPau, ordentypefig
 
 if __name__ == '__main__':
     app.run_server(debug=True)

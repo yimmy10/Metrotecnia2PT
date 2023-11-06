@@ -45,6 +45,7 @@ departamentos = [
     ("-","--- Elige Una ---"),
     ("Administracion","Administracion"),
     ("Ventas","Ventas"),
+    ("Servicios","Servicios"),
     ("Cotizacion","Cotizacion"),
     ("Laboratorios","Laboratorios"),
 ]
@@ -332,7 +333,7 @@ class OrdenTrabajoForm(forms.ModelForm):
             "codigoOT": "Codigo OT",
             "nombre": "Nombre",
             "fecha": "Fecha",
-            "declaraconf": "Declaración de confidencialidad",
+            "declaraconf": "Declaración de conformidad",
             "ordenCompra": "Orden de compra",
             "notas": "Notas",
             "serie": "Serie",
@@ -350,11 +351,3 @@ class OrdenTrabajoForm(forms.ModelForm):
         self.fields['notas'].widget = forms.Textarea(attrs={'class': 'form-control', 'rows': 3})
         self.fields['notas_especiales'].widget = forms.Textarea(attrs={'class': 'form-control', 'rows': 3})
         self.fields['cotizacion_id'].queryset = Cotizacion.objects.filter(estatus='ACEPTADA')
-
-
-
-
-
-
-
-

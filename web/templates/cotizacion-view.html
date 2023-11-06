@@ -162,10 +162,12 @@
 
       {% if object.activo %}
         <h3>Acciones</h3>
-        {% if object.estatus == 'vigente' or object.estatus == 'VIGENTE' %}
-          <a class="btn btn-outline-success" href="{% url 'cotizacion-aceptar' pk=object.pk %}" style="margin-right: 10px">Aceptar</a>
-          <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#rechazarModal" style="margin-right: 10px">Rechazar</button>
-          <a class="btn btn-outline-secondary" href='{% url "cotizacion-update" pk=object.pk %}' style="margin-right: 10px">Modificar</a>     
+        {% if object.estatus|lower == 'vigente'%}
+          {% if user.empleado.departamento == "Ventas" or user.empleado.departamento == "Administracion"%}
+            <a class="btn btn-outline-success" href="{% url 'cotizacion-aceptar' pk=object.pk %}" style="margin-right: 10px">Aceptar</a>
+            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#rechazarModal" style="margin-right: 10px">Rechazar</button>    
+          {%endif%}
+          <a class="btn btn-outline-secondary" href='{% url "cotizacion-update" pk=object.pk %}' style="margin-right: 10px">Modificar</a> 
         {% endif %}
 
       {% endif %}
